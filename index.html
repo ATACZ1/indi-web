@@ -351,6 +351,7 @@
       transform-origin: top center;
       scrollbar-width: none;
       -ms-overflow-style: none;
+      backface-visibility: hidden;
     }
 
     .stack-panel::-webkit-scrollbar {
@@ -1158,16 +1159,23 @@
       section.style.height = `${window.innerHeight + perCardScroll * (cardCount - 1)}px`;
     }
 
-    function updateStack() {
-      if (window.innerWidth <= 768) {
-        dotsWrap.classList.remove('visible');
-        return;
-      }
+    let targetIdx = 0;
+    let smoothIdx = 0;
+    let rafId = null;
+    let isAnimating = false;
+    let wheelLocked = false;
+    let wheelUnlockTimer = null;
+    let scrollAnimRaf = null;
+    const snapDurationMs = 650;
 
+    function readTargetScroll() {
       const scrolled = -section.getBoundingClientRect().top;
-      const idx = clamp(scrolled / perCardScroll, 0, cardCount - 1);
-      const active = Math.round(idx);
+      targetIdx = clamp(scrolled / perCardScroll, 0, cardCount - 1);
+      return scrolled;
+    }
 
+    function renderStack(idx, scrolled) {
+      const active = Math.round(idx);
       const inView =
         scrolled > -window.innerHeight * 0.45 &&
         scrolled < perCardScroll * (cardCount - 1) + window.innerHeight * 0.45;
@@ -1178,7 +1186,9 @@
         if (i === 0) {
           const t = clamp(idx, 0, 1);
           const op = lerp(1, 0, clamp((idx - 0.35) / 0.65, 0, 1));
-          card.style.transform = `translateY(${lerp(0, -34, t)}px) scale(${lerp(1, 0.95, t)})`;
+          const y = lerp(0, -44, t);
+          const s = lerp(1, 0.935, t);
+          card.style.transform = `translateY(${y}px) scale(${s})`;
           card.style.opacity = op;
           card.style.zIndex = cardCount;
         } else {
@@ -1189,12 +1199,12 @@
           let op;
 
           if (appear < 1) {
-            y = lerp(90, 0, appear);
-            s = lerp(0.92, 1, appear);
-            op = lerp(0, 1, clamp(appear * 2.2, 0, 1));
+            y = lerp(104, 0, appear);
+            s = lerp(0.9, 1, appear);
+            op = lerp(0, 1, clamp(appear * 2.15, 0, 1));
           } else {
-            y = lerp(0, -34, vanish);
-            s = lerp(1, 0.95, vanish);
+            y = lerp(0, -44, vanish);
+            s = lerp(1, 0.935, vanish);
             op = lerp(1, 0, vanish);
           }
 
@@ -1205,31 +1215,122 @@
       });
     }
 
+    function animateStack() {
+      if (window.innerWidth <= 768) {
+        dotsWrap.classList.remove('visible');
+        isAnimating = false;
+        rafId = null;
+        return;
+      }
+
+      const scrolled = readTargetScroll();
+      smoothIdx = lerp(smoothIdx, targetIdx, 0.11);
+      if (Math.abs(targetIdx - smoothIdx) < 0.0007) {
+        smoothIdx = targetIdx;
+      }
+
+      renderStack(smoothIdx, scrolled);
+
+      if (Math.abs(targetIdx - smoothIdx) > 0.0007 || isAnimating) {
+        rafId = requestAnimationFrame(animateStack);
+      } else {
+        isAnimating = false;
+        rafId = null;
+      }
+    }
+
+    function requestStackRender() {
+      isAnimating = true;
+      if (!rafId) {
+        rafId = requestAnimationFrame(animateStack);
+      }
+    }
+
+    function currentPanelIndex() {
+      readTargetScroll();
+      return Math.round(targetIdx);
+    }
+
+    function goToPanelIndex(index) {
+      if (window.innerWidth <= 768) return;
+      const clampedIndex = clamp(index, 0, cardCount - 1);
+      const targetTop = section.offsetTop + perCardScroll * clampedIndex;
+      const startTop = window.scrollY;
+      const diff = targetTop - startTop;
+      if (Math.abs(diff) < 0.5) {
+        requestStackRender();
+        return;
+      }
+
+      if (scrollAnimRaf) cancelAnimationFrame(scrollAnimRaf);
+      const startTime = performance.now();
+      const easeInOutQuart = (t) => (t < 0.5 ? 8 * t * t * t * t : 1 - Math.pow(-2 * t + 2, 4) / 2);
+
+      const tick = (now) => {
+        const elapsed = now - startTime;
+        const t = clamp(elapsed / snapDurationMs, 0, 1);
+        const eased = easeInOutQuart(t);
+        window.scrollTo(0, startTop + diff * eased);
+        if (t < 1) {
+          scrollAnimRaf = requestAnimationFrame(tick);
+        } else {
+          scrollAnimRaf = null;
+          requestStackRender();
+        }
+      };
+
+      scrollAnimRaf = requestAnimationFrame(tick);
+    }
+
+    function canControlStackByWheel() {
+      if (window.innerWidth <= 768) return false;
+      const rect = section.getBoundingClientRect();
+      return rect.top < window.innerHeight * 0.8 && rect.bottom > window.innerHeight * 0.2;
+    }
+
+    function lockWheelStep() {
+      wheelLocked = true;
+      if (wheelUnlockTimer) clearTimeout(wheelUnlockTimer);
+      wheelUnlockTimer = setTimeout(() => {
+        wheelLocked = false;
+      }, 720);
+    }
+
     setupStackHeight();
-    updateStack();
+    requestStackRender();
     window.addEventListener('resize', () => {
       setupStackHeight();
-      updateStack();
+      requestStackRender();
     });
-    window.addEventListener('scroll', updateStack, { passive: true });
+    window.addEventListener('scroll', requestStackRender, { passive: true });
+    window.addEventListener('wheel', (event) => {
+      if (!canControlStackByWheel()) return;
+      if (wheelLocked) {
+        event.preventDefault();
+        return;
+      }
+
+      const delta = event.deltaY;
+      if (Math.abs(delta) < 4) return;
+      event.preventDefault();
+
+      const step = delta > 0 ? 1 : -1;
+      const nextIndex = currentPanelIndex() + step;
+      goToPanelIndex(nextIndex);
+      lockWheelStep();
+    }, { passive: false });
 
     allDots.forEach((dot) => {
       dot.addEventListener('click', () => {
         if (window.innerWidth <= 768) return;
-        window.scrollTo({
-          top: section.offsetTop + perCardScroll * Number(dot.dataset.i),
-          behavior: 'smooth',
-        });
+        goToPanelIndex(Number(dot.dataset.i));
       });
     });
 
     function scrollToStackPanelById(targetId) {
       const panelIndex = panelIndexById.get(targetId);
       if (panelIndex === undefined || window.innerWidth <= 768) return false;
-      window.scrollTo({
-        top: section.offsetTop + perCardScroll * panelIndex,
-        behavior: 'smooth',
-      });
+      goToPanelIndex(panelIndex);
       return true;
     }
 
