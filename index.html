@@ -1,0 +1,1272 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Webová Agentura – Weby, které prodávají a šetří čas</title>
+  <meta name="description" content="Tvoříme moderní weby na klíč pro firmy, markeťáky i začínající podnikatele. Bez stresu, bez IT žargonu.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --slate-950: #0f172a;
+      --slate-900: #1e293b;
+      --slate-800: #1e2a3a;
+      --slate-700: #334155;
+      --slate-600: #475569;
+      --slate-400: #94a3b8;
+      --slate-300: #cbd5e1;
+      --slate-200: #e2e8f0;
+      --slate-100: #f1f5f9;
+      --slate-50: #f8fafc;
+      --white: #ffffff;
+      --accent: #0d9488;
+      --accent-hover: #14b8a6;
+      --accent-light: rgba(13, 148, 136, 0.12);
+      --accent-glow: rgba(20, 184, 166, 0.24);
+      --green-500: #22c55e;
+      --green-100: #dcfce7;
+      --radius: 12px;
+      --radius-lg: 20px;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+      --shadow-md: 0 4px 20px rgba(0,0,0,0.08);
+      --shadow-lg: 0 10px 40px rgba(0,0,0,0.1);
+      --shadow-card: 0 1px 3px rgba(0,0,0,0.04), 0 6px 24px rgba(0,0,0,0.06);
+      --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      scrollbar-width: none;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      color: var(--slate-900);
+      background: var(--white);
+      line-height: 1.6;
+      overflow-x: hidden;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    body::-webkit-scrollbar {
+      width: 0;
+      height: 0;
+      display: none;
+    }
+
+    .container {
+      max-width: 1360px;
+      margin: 0 auto;
+      padding: 0 12px;
+    }
+
+    /* ===== NAVBAR ===== */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 16px 0;
+      transition: var(--transition);
+      background: transparent;
+    }
+
+    .navbar.scrolled {
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--slate-200);
+      padding: 12px 0;
+    }
+
+    .navbar .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--slate-950);
+      text-decoration: none;
+      letter-spacing: -0.03em;
+    }
+
+    .logo span {
+      color: var(--accent);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--slate-600);
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color var(--transition);
+    }
+
+    .nav-links a:hover {
+      color: var(--slate-950);
+    }
+
+    .nav-cta {
+      background: var(--slate-950);
+      color: var(--white) !important;
+      padding: 10px 22px;
+      border-radius: 10px;
+      font-weight: 600 !important;
+      transition: all var(--transition) !important;
+    }
+
+    .nav-cta:hover {
+      background: var(--slate-800) !important;
+      transform: translateY(-1px);
+    }
+
+    .mobile-toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+    }
+
+    .mobile-toggle span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--slate-900);
+      margin: 6px 0;
+      border-radius: 2px;
+      transition: var(--transition);
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      min-height: 100%;
+      padding: 120px 0 84px;
+      background: linear-gradient(180deg, var(--slate-50) 0%, var(--white) 100%);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -200px;
+      right: -200px;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero .container {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      max-width: 980px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent-light);
+      color: var(--accent);
+      padding: 8px 18px;
+      border-radius: 100px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 32px;
+      border: 1px solid rgba(13, 148, 136, 0.2);
+    }
+
+    .hero-badge::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: pulse-dot 2s infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.3); }
+    }
+
+    .hero h1 {
+      font-size: clamp(2.7rem, 6vw, 4.6rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      color: var(--slate-950);
+      margin-bottom: 24px;
+    }
+
+    .hero h1 .highlight {
+      background: linear-gradient(135deg, var(--accent), #2dd4bf);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: clamp(1.16rem, 2.2vw, 1.38rem);
+      color: var(--slate-600);
+      max-width: 760px;
+      margin: 0 auto 40px;
+      line-height: 1.7;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 20px 40px;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: all var(--transition);
+      font-family: inherit;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: var(--white);
+      box-shadow: 0 4px 16px rgba(13, 148, 136, 0.3);
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(20, 184, 166, 0.35);
+    }
+
+    .btn-secondary {
+      background: var(--white);
+      color: var(--slate-900);
+      border: 1.5px solid var(--slate-200);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--slate-400);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .hero-proof {
+      margin-top: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      color: var(--slate-400);
+      font-size: 0.85rem;
+    }
+
+    .hero-proof .stat {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .hero-proof .stat strong {
+      color: var(--slate-700);
+      font-weight: 700;
+    }
+
+    .hero-proof .divider {
+      width: 4px;
+      height: 4px;
+      background: var(--slate-300);
+      border-radius: 50%;
+    }
+
+    /* ===== STACK SCROLL ===== */
+    .stack-section {
+      position: relative;
+      width: 100%;
+      margin: 0 0 120px;
+    }
+
+    .sticky-wrap {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      width: 100%;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .cards-container {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+
+    .stack-panel {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--white);
+      display: flex;
+      flex-direction: column;
+      overflow: auto;
+      will-change: transform, opacity;
+      transform-origin: top center;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .stack-panel::-webkit-scrollbar {
+      width: 0;
+      height: 0;
+      display: none;
+    }
+
+    .stack-panel::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: var(--accent);
+      opacity: 0.8;
+    }
+
+    .panel-hero {
+      background: linear-gradient(180deg, var(--slate-50) 0%, var(--white) 100%);
+    }
+
+    .panel-personas {
+      background: linear-gradient(160deg, #ffffff 0%, #f7fbfb 100%);
+    }
+
+    .panel-process {
+      background: linear-gradient(160deg, #ffffff 0%, #f8fafc 100%);
+    }
+
+    .panel-contact {
+      background: linear-gradient(160deg, #ffffff 0%, #f2fbfa 100%);
+    }
+
+    .panel-inner {
+      width: min(1400px, 100%);
+      margin: 0 auto;
+      min-height: 100%;
+      padding: 88px 12px 34px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .card-label {
+      font-size: 0.76rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .card-title {
+      font-size: clamp(2.05rem, 3.6vw, 3.05rem);
+      letter-spacing: -0.03em;
+      color: var(--slate-950);
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+
+    .card-subtitle {
+      color: var(--slate-600);
+      font-size: 1.14rem;
+      max-width: 940px;
+      margin-bottom: 22px;
+    }
+
+    .card-content {
+      padding-right: 8px;
+    }
+
+    .card-content::-webkit-scrollbar {
+      width: 0;
+      height: 0;
+      display: none;
+    }
+
+    .personas-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .persona-card {
+      background: #ffffff;
+      border: 1px solid var(--slate-200);
+      border-radius: 16px;
+      padding: 30px;
+    }
+
+    .persona-icon {
+      width: 44px;
+      height: 44px;
+      background: var(--accent-light);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      margin-bottom: 14px;
+    }
+
+    .persona-card h3 {
+      font-size: 1.16rem;
+      color: var(--slate-950);
+      margin-bottom: 10px;
+      letter-spacing: -0.02em;
+    }
+
+    .persona-card p {
+      font-size: 0.98rem;
+      color: var(--slate-600);
+      line-height: 1.65;
+      margin-bottom: 14px;
+    }
+
+    .persona-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .persona-features li {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 0.86rem;
+      color: var(--slate-700);
+      line-height: 1.5;
+    }
+
+    .persona-features li::before {
+      content: '✓';
+      color: var(--green-500);
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .process-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .process-step {
+      background: #ffffff;
+      border: 1px solid var(--slate-200);
+      border-radius: 16px;
+      padding: 32px;
+    }
+
+    .step-number {
+      width: 54px;
+      height: 54px;
+      background: var(--accent-light);
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 14px;
+    }
+
+    .step-number span {
+      color: var(--accent);
+      font-weight: 800;
+      font-size: 1.1rem;
+    }
+
+    .process-step h3 {
+      color: var(--slate-950);
+      margin-bottom: 8px;
+      font-size: 1.15rem;
+    }
+
+    .process-step p {
+      font-size: 0.98rem;
+      color: var(--slate-600);
+      line-height: 1.65;
+    }
+
+    .contact-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 26px;
+      align-items: center;
+    }
+
+    .contact-content > p {
+      font-size: 1rem;
+      color: var(--slate-600);
+      line-height: 1.7;
+      margin-bottom: 22px;
+    }
+
+    .trust-points {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .trust-point {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      border: 1px solid var(--slate-200);
+      border-radius: 12px;
+      padding: 12px 14px;
+      background: #fff;
+    }
+
+    .trust-point-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: var(--green-100);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .trust-point-text h4 {
+      font-size: 0.92rem;
+      color: var(--slate-900);
+      margin-bottom: 2px;
+    }
+
+    .trust-point-text p {
+      font-size: 0.82rem;
+      color: var(--slate-500);
+      line-height: 1.5;
+    }
+
+    .contact-form-wrapper {
+      background: #ffffff;
+      border: 1px solid var(--slate-200);
+      border-radius: 14px;
+      padding: 34px;
+    }
+
+    .contact-form-wrapper h3 {
+      font-size: 1.1rem;
+      color: var(--slate-950);
+      margin-bottom: 6px;
+    }
+
+    .contact-form-wrapper > p {
+      font-size: 0.9rem;
+      color: var(--slate-500);
+      margin-bottom: 18px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--slate-700);
+      margin-bottom: 8px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1.5px solid var(--slate-200);
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      background: var(--white);
+      color: var(--slate-900);
+      transition: all var(--transition);
+      outline: none;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px var(--accent-light);
+    }
+
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+      color: var(--slate-400);
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .form-group select {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 40px;
+    }
+
+    .form-submit {
+      width: 100%;
+      padding: 16px;
+      margin-top: 8px;
+    }
+
+    .form-note {
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--slate-400);
+      margin-top: 16px;
+    }
+
+    .form-note svg {
+      display: inline;
+      vertical-align: middle;
+      margin-right: 4px;
+    }
+
+    .progress-dots {
+      position: fixed;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      z-index: 120;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--transition);
+    }
+
+    .progress-dots.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.2);
+      transition: transform var(--transition), background var(--transition);
+      cursor: pointer;
+    }
+
+    .dot.active {
+      background: var(--accent);
+      transform: scale(1.45);
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      padding: 40px 0;
+      background: var(--slate-950);
+      color: var(--slate-400);
+    }
+
+    .footer .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-logo {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--white);
+      text-decoration: none;
+    }
+
+    .footer-logo span {
+      color: var(--accent);
+    }
+
+    .footer p {
+      font-size: 0.85rem;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+
+    .footer-links a {
+      color: var(--slate-400);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: color var(--transition);
+    }
+
+    .footer-links a:hover {
+      color: var(--white);
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 1024px) {
+      .personas-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .process-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .contact-wrapper {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(20px);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 24px;
+        z-index: 99;
+      }
+
+      .nav-links.open {
+        display: flex;
+      }
+
+      .nav-links a {
+        font-size: 1.2rem;
+      }
+
+      .mobile-toggle {
+        display: block;
+        z-index: 101;
+      }
+
+      .mobile-toggle.open span:nth-child(1) {
+        transform: rotate(45deg) translate(6px, 6px);
+      }
+
+      .mobile-toggle.open span:nth-child(2) {
+        opacity: 0;
+      }
+
+      .mobile-toggle.open span:nth-child(3) {
+        transform: rotate(-45deg) translate(6px, -6px);
+      }
+
+      .hero {
+        padding: 92px 0 50px;
+      }
+
+      .stack-section {
+        height: auto !important;
+        margin: 0 0 70px;
+      }
+
+      .sticky-wrap {
+        position: relative;
+        top: auto;
+        height: auto;
+        padding: 0;
+        overflow: visible;
+      }
+
+      .cards-container {
+        height: auto !important;
+        display: grid;
+        gap: 14px;
+      }
+
+      .stack-panel {
+        position: relative;
+        inset: auto;
+        transform: none !important;
+        opacity: 1 !important;
+        min-height: auto;
+        padding: 0;
+      }
+
+      .panel-inner {
+        padding: 88px 14px 26px;
+        min-height: auto;
+        justify-content: flex-start;
+      }
+
+      .hero-proof {
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .hero-proof .divider {
+        display: none;
+      }
+
+      .progress-dots {
+        display: none;
+      }
+
+      .footer .container {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero-buttons {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .hero-buttons .btn {
+        justify-content: center;
+      }
+
+      .persona-card {
+        padding: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <a href="#" class="logo">web<span>craft</span></a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#hero">Hero</a></li>
+        <li><a href="#process">Jak pracujeme</a></li>
+        <li><a href="#contact" class="nav-cta">Napište nám</a></li>
+      </ul>
+      <button class="mobile-toggle" id="mobileToggle" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- STACK SCROLL SECTIONS -->
+  <section class="stack-section" id="stackSection">
+    <div class="sticky-wrap">
+      <div class="cards-container" id="cardsContainer">
+        <article class="stack-panel panel-hero" id="hero">
+          <section class="hero">
+            <div class="container">
+              <div class="hero-badge">Přijímáme nové projekty</div>
+              <h1>
+                Tvoříme weby, které vám<br>
+                <span class="highlight">šetří čas, prodávají<br>a&nbsp;dají vám svobodu</span>
+              </h1>
+              <p>
+                Ať už řídíte firmu, vedete marketing nebo teprve začínáte podnikat –
+                postavíme vám web, který pracuje za vás. Bez technického stresu,
+                bez čekání měsíce na výsledek.
+              </p>
+              <div class="hero-buttons">
+                <a href="#contact" class="btn btn-primary">
+                  Chci nový web
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+                <a href="#contact" class="btn btn-secondary">Konzultace zdarma</a>
+              </div>
+              <div class="hero-proof">
+                <div class="stat"><strong>50+</strong> dokončených projektů</div>
+                <div class="divider"></div>
+                <div class="stat"><strong>4,9 ★</strong> průměrné hodnocení</div>
+                <div class="divider"></div>
+                <div class="stat"><strong>14 dní</strong> průměrná dodací lhůta</div>
+              </div>
+            </div>
+          </section>
+        </article>
+
+        <article class="stack-panel panel-personas" id="personas">
+          <div class="panel-inner">
+            <div class="card-label">Pro koho tvoříme</div>
+            <h2 class="card-title">Web na míru vašim potřebám</h2>
+            <p class="card-subtitle">Každý potřebuje něco jiného. Proto nasloucháme a stavíme řešení, které přesně sedne vaší situaci.</p>
+            <div class="card-content">
+              <div class="personas-grid">
+                <div class="persona-card">
+                  <div class="persona-icon">🏢</div>
+                  <h3>Web kompletně na klíč</h3>
+                  <p>Nemáte čas řešit texty, fotky a technologie? Postaráme se o vše od A do Z.</p>
+                  <ul class="persona-features">
+                    <li>Texty a fotografie připravíme za vás</li>
+                    <li>Profesionální vzhled, který buduje důvěru</li>
+                    <li>Žádné IT starosti, vše vyřešíme my</li>
+                  </ul>
+                </div>
+                <div class="persona-card">
+                  <div class="persona-icon">📊</div>
+                  <h3>Výkon, rychlost a nezávislost</h3>
+                  <p>Moderní systém, rychlé načítání a svoboda upravovat kampaně bez čekání.</p>
+                  <ul class="persona-features">
+                    <li>Rychlé načítání pro lepší výkon kampaní</li>
+                    <li>Snadná správa obsahu bez vývojáře</li>
+                    <li>Napojení na analytiku a reklamní systémy</li>
+                  </ul>
+                </div>
+                <div class="persona-card">
+                  <div class="persona-icon">🚀</div>
+                  <h3>Profesionální start bez statisíců</h3>
+                  <p>Online vizitka, která nevypadá levně, ale nepohltí celý začátečnický rozpočet.</p>
+                  <ul class="persona-features">
+                    <li>Cenově dostupné řešení bez kompromisů</li>
+                    <li>Rychlý start bez technického stresu</li>
+                    <li>Okamžitá důvěryhodnost u prvních klientů</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="stack-panel panel-process" id="process">
+          <div class="panel-inner">
+            <div class="card-label">Jak pracujeme</div>
+            <h2 class="card-title">Od prvního hovoru k hotovému webu</h2>
+            <p class="card-subtitle">Žádný IT žargon. Žádné překvapení. Jen jasný proces ve 3 krocích.</p>
+            <div class="card-content">
+              <div class="process-grid">
+                <div class="process-step">
+                  <div class="step-number"><span>1</span></div>
+                  <h3>Krátký hovor zdarma</h3>
+                  <p>Zavoláme si na 15 minut. Zjistíme, co přesně potřebujete, a řekneme vám, jestli a jak vám můžeme pomoct.</p>
+                </div>
+                <div class="process-step">
+                  <div class="step-number"><span>2</span></div>
+                  <h3>Návrh a realizace</h3>
+                  <p>Připravíme grafický návrh, odsouhlasíme ho s vámi a web postavíme. Průběžně ukazujeme pokrok, bez čekání v temnotě.</p>
+                </div>
+                <div class="process-step">
+                  <div class="step-number"><span>3</span></div>
+                  <h3>Spuštění a zaškolení</h3>
+                  <p>Web spustíme, zaškolíme vás na správu obsahu a zůstaneme k dispozici, kdykoliv budete potřebovat.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="stack-panel panel-contact" id="contact">
+          <div class="panel-inner">
+            <div class="card-label">Konzultace a poptávka</div>
+            <h2 class="card-title">S čím vám můžeme pomoci?</h2>
+            <p class="card-subtitle">Úvodní hovor vás k ničemu nezavazuje. Bez složité terminologie, jednoduše a lidsky.</p>
+            <div class="card-content">
+              <div class="contact-wrapper">
+              <div class="contact-content">
+                <p>
+                  Prostě si popovídáme o tom, co potřebujete, a navrhneme řešení,
+                  které dává smysl pro váš rozpočet i cíle.
+                </p>
+                <div class="trust-points">
+                  <div class="trust-point">
+                    <div class="trust-point-icon">🤝</div>
+                    <div class="trust-point-text">
+                      <h4>Bez závazků</h4>
+                      <p>První konzultace je zdarma. Žádné smlouvy, žádný tlak.</p>
+                    </div>
+                  </div>
+                  <div class="trust-point">
+                    <div class="trust-point-icon">💬</div>
+                    <div class="trust-point-text">
+                      <h4>Srozumitelně</h4>
+                      <p>Mluvíme lidsky, ne v kódech. Vše vysvětlíme tak, aby to dávalo smysl.</p>
+                    </div>
+                  </div>
+                  <div class="trust-point">
+                    <div class="trust-point-icon">⚡</div>
+                    <div class="trust-point-text">
+                      <h4>Rychlá odpověď</h4>
+                      <p>Ozveme se vám do 24 hodin. Většinou mnohem dříve.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="contact-form-wrapper">
+                <h3>Nezávazná poptávka</h3>
+                <p>Vyplňte formulář a my se vám ozveme.</p>
+                <form id="contactForm" onsubmit="handleSubmit(event)">
+                  <div class="form-group">
+                    <label for="name">Jméno</label>
+                    <input type="text" id="name" name="name" placeholder="Jan Novák" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" name="email" placeholder="jan@firma.cz" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="need">S čím vám můžeme pomoci?</label>
+                    <select id="need" name="need" required>
+                      <option value="" disabled selected>Vyberte možnost…</option>
+                      <option value="novy-web">Potřebuji nový web od nuly</option>
+                      <option value="redesign">Chci modernizovat stávající web</option>
+                      <option value="rychlost">Můj web je pomalý a nefunguje správně</option>
+                      <option value="marketing">Potřebuji web pro kampaně a marketing</option>
+                      <option value="eshop">Chci e-shop nebo online prodej</option>
+                      <option value="nevim">Nevím přesně, potřebuji poradit</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="message">Zpráva <span style="font-weight:400;color:var(--slate-400)">(nepovinné)</span></label>
+                    <textarea id="message" name="message" placeholder="Popište nám stručně, co potřebujete…"></textarea>
+                  </div>
+                  <button type="submit" class="btn btn-primary form-submit">
+                    Odeslat poptávku
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                  </button>
+                  <p class="form-note">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    Vaše údaje jsou v bezpečí. Nesdílíme je s nikým třetím.
+                  </p>
+                </form>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <a href="#" class="footer-logo">web<span>craft</span></a>
+      <p>&copy; 2026 webcraft. Všechna práva vyhrazena.</p>
+      <ul class="footer-links">
+        <li><a href="#">Ochrana osobních údajů</a></li>
+        <li><a href="#">Obchodní podmínky</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <div class="progress-dots" id="dots">
+    <div class="dot active" data-i="0"></div>
+    <div class="dot" data-i="1"></div>
+    <div class="dot" data-i="2"></div>
+    <div class="dot" data-i="3"></div>
+  </div>
+
+  <script>
+    // Navbar scroll effect
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 40);
+    });
+
+    // Mobile menu
+    const mobileToggle = document.getElementById('mobileToggle');
+    const navLinks = document.getElementById('navLinks');
+
+    mobileToggle.addEventListener('click', () => {
+      mobileToggle.classList.toggle('open');
+      navLinks.classList.toggle('open');
+      document.body.style.overflow = navLinks.classList.contains('open') ? 'hidden' : '';
+    });
+
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileToggle.classList.remove('open');
+        navLinks.classList.remove('open');
+        document.body.style.overflow = '';
+      });
+    });
+
+    // Stack scroll effect
+    const section = document.getElementById('stackSection');
+    const container = document.getElementById('cardsContainer');
+    const dotsWrap = document.getElementById('dots');
+    const allDots = dotsWrap.querySelectorAll('.dot');
+    const cards = [...container.querySelectorAll('.stack-panel')];
+    const cardCount = cards.length;
+    let perCardScroll = window.innerHeight * 0.85;
+    const panelIndexById = new Map(cards.map((panel, index) => [panel.id, index]));
+
+    const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+    const lerp = (a, b, t) => a + (b - a) * t;
+
+    function setupStackHeight() {
+      if (window.innerWidth <= 768) {
+        section.style.height = 'auto';
+        return;
+      }
+      perCardScroll = window.innerHeight * 0.85;
+      section.style.height = `${window.innerHeight + perCardScroll * (cardCount - 1)}px`;
+    }
+
+    function updateStack() {
+      if (window.innerWidth <= 768) {
+        dotsWrap.classList.remove('visible');
+        return;
+      }
+
+      const scrolled = -section.getBoundingClientRect().top;
+      const idx = clamp(scrolled / perCardScroll, 0, cardCount - 1);
+      const active = Math.round(idx);
+
+      const inView =
+        scrolled > -window.innerHeight * 0.45 &&
+        scrolled < perCardScroll * (cardCount - 1) + window.innerHeight * 0.45;
+      dotsWrap.classList.toggle('visible', inView);
+      allDots.forEach((dot, i) => dot.classList.toggle('active', i === active));
+
+      cards.forEach((card, i) => {
+        if (i === 0) {
+          const t = clamp(idx, 0, 1);
+          const op = lerp(1, 0, clamp((idx - 0.35) / 0.65, 0, 1));
+          card.style.transform = `translateY(${lerp(0, -34, t)}px) scale(${lerp(1, 0.95, t)})`;
+          card.style.opacity = op;
+          card.style.zIndex = cardCount;
+        } else {
+          const appear = clamp(idx - (i - 1), 0, 1);
+          const vanish = i < cardCount - 1 ? clamp((idx - i - 0.35) / 0.65, 0, 1) : 0;
+          let y;
+          let s;
+          let op;
+
+          if (appear < 1) {
+            y = lerp(90, 0, appear);
+            s = lerp(0.92, 1, appear);
+            op = lerp(0, 1, clamp(appear * 2.2, 0, 1));
+          } else {
+            y = lerp(0, -34, vanish);
+            s = lerp(1, 0.95, vanish);
+            op = lerp(1, 0, vanish);
+          }
+
+          card.style.transform = `translateY(${y}px) scale(${s})`;
+          card.style.opacity = op;
+          card.style.zIndex = cardCount - i + (appear >= 1 ? 100 : 0);
+        }
+      });
+    }
+
+    setupStackHeight();
+    updateStack();
+    window.addEventListener('resize', () => {
+      setupStackHeight();
+      updateStack();
+    });
+    window.addEventListener('scroll', updateStack, { passive: true });
+
+    allDots.forEach((dot) => {
+      dot.addEventListener('click', () => {
+        if (window.innerWidth <= 768) return;
+        window.scrollTo({
+          top: section.offsetTop + perCardScroll * Number(dot.dataset.i),
+          behavior: 'smooth',
+        });
+      });
+    });
+
+    function scrollToStackPanelById(targetId) {
+      const panelIndex = panelIndexById.get(targetId);
+      if (panelIndex === undefined || window.innerWidth <= 768) return false;
+      window.scrollTo({
+        top: section.offsetTop + perCardScroll * panelIndex,
+        behavior: 'smooth',
+      });
+      return true;
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach((link) => {
+      link.addEventListener('click', (event) => {
+        const href = link.getAttribute('href');
+        if (!href || href === '#') return;
+        const targetId = href.slice(1);
+        if (scrollToStackPanelById(targetId)) {
+          event.preventDefault();
+        }
+      });
+    });
+
+    // Form submission
+    function handleSubmit(e) {
+      e.preventDefault();
+      const btn = e.target.querySelector('button[type="submit"]');
+      const originalHTML = btn.innerHTML;
+
+      btn.innerHTML = `
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+        Odesláno!
+      `;
+      btn.style.background = 'var(--green-500)';
+      btn.style.boxShadow = '0 4px 16px rgba(34, 197, 94, 0.3)';
+      btn.disabled = true;
+
+      setTimeout(() => {
+        btn.innerHTML = originalHTML;
+        btn.style.background = '';
+        btn.style.boxShadow = '';
+        btn.disabled = false;
+        e.target.reset();
+      }, 3000);
+    }
+  </script>
+
+</body>
+</html>
