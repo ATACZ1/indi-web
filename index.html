@@ -3,1090 +3,589 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Webová Agentura – Weby, které prodávají a šetří čas</title>
+  <title>IndiWeb – Weby, které prodávají a šetří čas</title>
   <meta name="description" content="Tvoříme moderní weby na klíč pro firmy, markeťáky i začínající podnikatele. Bez stresu, bez IT žargonu.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,100..900&family=Inter:wght@200;300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    *, *::before, *::after {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    *,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
 
     :root {
-      --slate-950: #0f172a;
-      --slate-900: #1e293b;
-      --slate-800: #1e2a3a;
-      --slate-700: #334155;
-      --slate-600: #475569;
-      --slate-400: #94a3b8;
-      --slate-300: #cbd5e1;
-      --slate-200: #e2e8f0;
-      --slate-100: #f1f5f9;
-      --slate-50: #f8fafc;
-      --white: #ffffff;
-      --accent: #0d9488;
-      --accent-hover: #14b8a6;
-      --accent-light: rgba(13, 148, 136, 0.12);
-      --accent-glow: rgba(20, 184, 166, 0.24);
-      --green-500: #22c55e;
-      --green-100: #dcfce7;
-      --radius: 12px;
-      --radius-lg: 20px;
-      --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
-      --shadow-md: 0 4px 20px rgba(0,0,0,0.08);
-      --shadow-lg: 0 10px 40px rgba(0,0,0,0.1);
-      --shadow-card: 0 1px 3px rgba(0,0,0,0.04), 0 6px 24px rgba(0,0,0,0.06);
-      --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --bg: #0a0a0a;
+      --bg-card: #111;
+      --white: #fafafa;
+      --gray-200: #e5e5e5;
+      --gray-400: #a3a3a3;
+      --gray-500: #737373;
+      --gray-600: #525252;
+      --gray-800: #262626;
+      --border: rgba(255,255,255,0.12);
+      --border-strong: rgba(255,255,255,0.2);
+      --accent: var(--white);
+      --transition: 0.3s cubic-bezier(0.4,0,0.2,1);
     }
 
-    html {
-      scroll-behavior: smooth;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      scrollbar-width: none;
-    }
-
+    html { scroll-behavior: auto; scrollbar-width: none; -webkit-font-smoothing: antialiased; }
     body {
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
-      color: var(--slate-900);
-      background: var(--white);
+      font-family: 'Inter', system-ui, sans-serif;
+      color: var(--white);
+      background: var(--bg);
       line-height: 1.6;
       overflow-x: hidden;
       scrollbar-width: none;
       -ms-overflow-style: none;
     }
+    body::-webkit-scrollbar { width:0; height:0; display:none; }
 
-    body::-webkit-scrollbar {
-      width: 0;
-      height: 0;
-      display: none;
+    body > * { position: relative; z-index: 2; }
+
+    /* ===== BG SCENE (klávesnice před monitorem) ===== */
+    #bg-scene {
+      position: fixed; inset: 0;
+      width: 100vw; height: 100vh;
+      overflow: hidden; pointer-events: none; z-index: 0;
     }
+    .bg-layer { position: absolute; inset: 0; background: var(--bg); }
+    .bg-floor { position: absolute; bottom: 0; left: 0; right: 0; height: 28%; background: var(--bg); }
+    .bg-monitor {
+      position: absolute; top: 14%; right: 4%;
+      width: min(680px, 72vw); z-index: 5;
+    }
+    .bg-mon-frame {
+      background: linear-gradient(160deg, #1a1a1a 0%, #111 60%, #0a0a0a 100%);
+      border: 2px solid var(--gray-500); border-radius: 14px; padding: 16px;
+      box-shadow: 0 30px 90px rgba(0,0,0,0.9), inset 0 1px 0 rgba(255,255,255,0.06), 0 0 0 1px rgba(255,255,255,0.04);
+    }
+    .bg-screen {
+      border-radius: 6px; overflow: hidden; position: relative;
+      background: #0d0d0d; height: clamp(240px, 42vh, 420px);
+    }
+    .bg-screen::after {
+      content:''; position: absolute; inset: 0; pointer-events: none;
+      background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.06) 3px, rgba(0,0,0,0.06) 4px);
+    }
+    .bg-ed-hdr {
+      height: 34px; background: #111; display: flex; align-items: center; padding: 0 12px; gap: 6px;
+      border-bottom: 1px solid var(--gray-800); flex-shrink: 0;
+    }
+    .bg-dot { width: 9px; height: 9px; border-radius: 50%; }
+    .bg-dot.r { background: #666; } .bg-dot.y { background: #888; } .bg-dot.g { background: #aaa; }
+    .bg-tab { margin-left: 10px; padding: 3px 14px; background: #0d0d0d; border-radius: 3px 3px 0 0; font-size: 11px; color: var(--gray-500); border: 1px solid var(--gray-800); border-bottom: none; font-family: 'JetBrains Mono', monospace; }
+    .bg-tab.on { color: var(--white); background: #1a1a1a; }
+    .bg-ed-body { display: flex; height: calc(100% - 34px); }
+    .bg-sidebar { width: 118px; background: #0d0d0d; border-right: 1px solid var(--gray-800); padding: 6px 0; flex-shrink: 0; font-family: 'JetBrains Mono', monospace; }
+    .bg-si { padding: 2px 9px; font-size: 8.5px; color: var(--gray-600); white-space: nowrap; }
+    .bg-si.a { color: var(--gray-400); background: rgba(255,255,255,0.06); }
+    .bg-code-area { flex: 1; display: flex; overflow: hidden; }
+    .bg-ln { padding: 10px 8px; background: #0d0d0d; color: var(--gray-600); font-size: 11px; line-height: 22px; text-align: right; min-width: 28px; user-select: none; border-right: 1px solid var(--gray-800); font-family: 'JetBrains Mono', monospace; }
+    .bg-cc { flex: 1; padding: 10px 14px; font-size: 12px; line-height: 22px; overflow: hidden; font-family: 'JetBrains Mono', monospace; }
+    .bg-cl { white-space: pre; min-height: 22px; display: flex; align-items: center; }
+    .bg-kw { color: #569cd6; } .bg-fn { color: #dcdcaa; } .bg-str { color: #ce9178; }
+    .bg-tag { color: #569cd6; } .bg-attr { color: #9cdcfe; }
+    .bg-cm { color: #6a9955; font-style: italic; } .bg-plain { color: #d4d4d4; }
+    .bg-cursor-blink { display: inline-block; width: 2px; height: 12px; background: #fff; margin-left: 1px; vertical-align: middle; animation: bg-blink 1s step-end infinite; }
+    @keyframes bg-blink { 0%,100%{opacity:1} 50%{opacity:0} }
+    .bg-mon-neck { width: 18px; height: 64px; margin: 0 auto; background: linear-gradient(90deg,#262626,#1a1a1a,#262626); }
+    .bg-mon-base { width: 160px; height: 18px; margin: 0 auto; background: linear-gradient(180deg,#262626,#0a0a0a); border-radius: 0 0 10px 10px; box-shadow: 0 4px 16px rgba(0,0,0,0.5); }
 
-    .container {
-      max-width: 1360px;
-      margin: 0 auto;
-      padding: 0 12px;
+    .bg-keyboard {
+      position: absolute; bottom: 22%; right: 12%; transform: perspective(500px) rotateX(26deg);
+      transform-origin: bottom center; width: 380px; height: 112px;
+      background: linear-gradient(160deg,#1a1a1a 0%,#0d0d0d 100%);
+      border-radius: 7px; border: 1px solid var(--gray-600);
+      box-shadow: 0 8px 28px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.04);
+      z-index: 15;
+    }
+    .bg-krows { padding: 10px 12px 8px; display: flex; flex-direction: column; gap: 4px; }
+    .bg-krow { display: flex; gap: 3px; }
+    .bg-k { height: 14px; flex: 1; max-width: 19px; border-radius: 2px; background: linear-gradient(180deg,#262626 0%,#1a1a1a 100%); border: 1px solid var(--gray-600); border-bottom: 3px solid #0a0a0a; transition: all 0.055s; }
+    .bg-k.w { max-width: 32px; } .bg-k.ww { max-width: 96px; }
+    .bg-k.pressed { background: linear-gradient(180deg,#525252 0%,#404040 100%) !important; border-color: var(--gray-400); box-shadow: 0 0 8px rgba(255,255,255,0.15); transform: translateY(2px); border-bottom-width: 1px; }
+
+    @media (max-width: 768px) {
+      .bg-monitor, .bg-keyboard { display: none; }
     }
 
     /* ===== NAVBAR ===== */
     .navbar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 100;
-      padding: 16px 0;
-      transition: var(--transition);
-      background: transparent;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 14px 0; transition: var(--transition); background: transparent;
+      border-bottom: 1px solid transparent;
     }
-
     .navbar.scrolled {
-      background: rgba(255, 255, 255, 0.92);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--slate-200);
-      padding: 12px 0;
+      background: rgba(10,10,10,0.92); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      border-bottom-color: var(--border); padding: 12px 0;
     }
-
-    .navbar .container {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .logo {
-      font-size: 1.25rem;
-      font-weight: 800;
-      color: var(--slate-950);
-      text-decoration: none;
-      letter-spacing: -0.03em;
-    }
-
-    .logo span {
-      color: var(--accent);
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 32px;
-      list-style: none;
-    }
-
-    .nav-links a {
-      text-decoration: none;
-      color: var(--slate-600);
-      font-size: 0.9rem;
-      font-weight: 500;
-      transition: color var(--transition);
-    }
-
-    .nav-links a:hover {
-      color: var(--slate-950);
-    }
-
+    .navbar .container { display: flex; align-items: center; justify-content: space-between; }
+    .container { max-width: 1360px; margin: 0 auto; padding: 0 12px; }
+    .logo { display: flex; align-items: center; text-decoration: none; }
+    .logo .brand-text { font-size: 1.25rem; font-weight: 800; color: var(--white); letter-spacing: -0.02em; line-height: 1; }
+    .logo .brand-text span { color: var(--white); }
+    .nav-links { display: flex; align-items: center; gap: 28px; list-style: none; }
+    .nav-links a { text-decoration: none; color: var(--gray-400); font-size: 0.9rem; font-weight: 500; transition: color var(--transition); }
+    .nav-links a:hover { color: var(--white); }
     .nav-cta {
-      background: var(--slate-950);
-      color: var(--white) !important;
-      padding: 10px 22px;
-      border-radius: 10px;
-      font-weight: 600 !important;
-      transition: all var(--transition) !important;
+      background: var(--white); color: var(--bg) !important;
+      padding: 10px 22px; border-radius: 999px; font-weight: 600 !important;
+      transition: all var(--transition) !important; border: 1px solid var(--border-strong);
     }
+    .nav-cta:hover { background: var(--gray-200) !important; color: var(--bg) !important; transform: translateY(-1px); }
+    .mobile-toggle { display: none; background: none; border: none; cursor: pointer; padding: 8px; }
+    .mobile-toggle span { display: block; width: 24px; height: 2px; background: var(--white); margin: 6px 0; border-radius: 2px; transition: var(--transition); }
 
-    .nav-cta:hover {
-      background: var(--slate-800) !important;
-      transform: translateY(-1px);
+    /* ===== HERO TOP ===== */
+    .hero-top {
+      padding: 140px 0 100px; text-align: center; position: relative; z-index: 10;
+      min-height: 60vh; display: flex; align-items: center; justify-content: center;
     }
-
-    .mobile-toggle {
-      display: none;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 8px;
+    .hero-top .container { width: 100%; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,0.06); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      color: var(--gray-400); padding: 8px 18px; border-radius: 100px;
+      font-size: 0.85rem; font-weight: 600; margin-bottom: 28px;
+      border: 1px solid var(--border);
     }
-
-    .mobile-toggle span {
-      display: block;
-      width: 24px;
-      height: 2px;
-      background: var(--slate-900);
-      margin: 6px 0;
-      border-radius: 2px;
-      transition: var(--transition);
+    .hero-h1 {
+      font-size: clamp(2.4rem,5vw,4rem); font-weight: 800; line-height: 1.1; letter-spacing: -0.03em;
+      color: var(--white); margin-bottom: 20px; max-width: 900px; margin-left: auto; margin-right: auto;
     }
-
-    /* ===== HERO ===== */
-    .hero {
-      min-height: 100%;
-      padding: 120px 0 84px;
-      background: linear-gradient(180deg, var(--slate-50) 0%, var(--white) 100%);
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
+    .hero-h1-highlight {
+      color: var(--gray-200);
     }
-
-    .hero::before {
-      content: '';
-      position: absolute;
-      top: -200px;
-      right: -200px;
-      width: 600px;
-      height: 600px;
-      background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
-      pointer-events: none;
+    .hero-p {
+      font-size: clamp(1.1rem,2vw,1.3rem); color: var(--gray-500); max-width: 640px; margin: 0 auto 32px; line-height: 1.7;
     }
+    .hero-top .hero-buttons { margin-bottom: 48px; }
+    .hero-proof {
+      display: flex; align-items: center; justify-content: center; gap: 24px; flex-wrap: wrap;
+      color: var(--gray-500); font-size: 0.9rem;
+    }
+    .hero-stat strong { color: var(--white); font-weight: 700; }
+    .hero-proof .hero-stat:not(:first-child)::before { content: ' • '; margin-right: 8px; color: var(--gray-600); }
 
-    .hero .container {
+    /* ===== INDIWEB HERO (3D + překrývání + hover thin→bold) ===== */
+    #indiwebHero {
+      display: block; margin-bottom: 20px;
+      font-size: clamp(2.8rem, 8vw, 5rem); font-weight: 200; letter-spacing: -0.04em;
+      color: var(--white); line-height: 1; text-align: center;
+      perspective: 1200px; transform-style: preserve-3d;
+      transform: translateX(-100%); opacity: 0;
+      transition: transform 0.7s cubic-bezier(0.22,1,0.36,1), opacity 0.6s ease;
+    }
+    #indiwebHero.slide-in {
+      transform: translateX(0); opacity: 1;
+    }
+    #indiwebHero .indiweb-thin {
+      display: inline-block;
+      font-weight: 200;
+      transform: translateZ(-24px) scale(0.96);
+      margin-right: -0.08em;
+      transition: font-weight 0.4s ease, transform 0.4s ease;
+      filter: brightness(0.85);
+    }
+    #indiwebHero .indiweb-bold {
+      display: inline-block;
+      font-weight: 700;
+      transform: translateZ(16px) scale(1.02);
+      transition: font-weight 0.4s ease, transform 0.4s ease;
       position: relative;
       z-index: 1;
-      text-align: center;
-      max-width: 980px;
     }
-
-    .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--accent-light);
-      color: var(--accent);
-      padding: 8px 18px;
-      border-radius: 100px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      margin-bottom: 32px;
-      border: 1px solid rgba(13, 148, 136, 0.2);
-    }
-
-    .hero-badge::before {
-      content: '';
-      width: 8px;
-      height: 8px;
-      background: var(--accent);
-      border-radius: 50%;
-      animation: pulse-dot 2s infinite;
-    }
-
-    @keyframes pulse-dot {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.5; transform: scale(1.3); }
-    }
-
-    .hero h1 {
-      font-size: clamp(2.7rem, 6vw, 4.6rem);
-      font-weight: 800;
-      line-height: 1.1;
-      letter-spacing: -0.03em;
-      color: var(--slate-950);
-      margin-bottom: 24px;
-    }
-
-    .hero h1 .highlight {
-      background: linear-gradient(135deg, var(--accent), #2dd4bf);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .hero p {
-      font-size: clamp(1.16rem, 2.2vw, 1.38rem);
-      color: var(--slate-600);
-      max-width: 760px;
-      margin: 0 auto 40px;
-      line-height: 1.7;
-    }
-
-    .hero-buttons {
-      display: flex;
-      gap: 16px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 20px 40px;
-      border-radius: 12px;
-      font-size: 1.1rem;
-      font-weight: 600;
-      text-decoration: none;
-      cursor: pointer;
-      border: none;
-      transition: all var(--transition);
-      font-family: inherit;
-    }
-
-    .btn-primary {
-      background: var(--accent);
-      color: var(--white);
-      box-shadow: 0 4px 16px rgba(13, 148, 136, 0.3);
-    }
-
-    .btn-primary:hover {
-      background: var(--accent-hover);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 24px rgba(20, 184, 166, 0.35);
-    }
-
-    .btn-secondary {
-      background: var(--white);
-      color: var(--slate-900);
-      border: 1.5px solid var(--slate-200);
-    }
-
-    .btn-secondary:hover {
-      border-color: var(--slate-400);
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-md);
-    }
-
-    .hero-proof {
-      margin-top: 56px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 24px;
-      flex-wrap: wrap;
-      color: var(--slate-400);
-      font-size: 0.85rem;
-    }
-
-    .hero-proof .stat {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .hero-proof .stat strong {
-      color: var(--slate-700);
+    #indiwebHero:hover .indiweb-thin {
       font-weight: 700;
+      transform: translateZ(12px) scale(1);
+      filter: brightness(1);
+    }
+    #indiwebHero:hover .indiweb-bold {
+      font-weight: 800;
+      transform: translateZ(24px) scale(1.03);
     }
 
-    .hero-proof .divider {
-      width: 4px;
-      height: 4px;
-      background: var(--slate-300);
-      border-radius: 50%;
-    }
-
-    /* ===== STACK SCROLL ===== */
-    .stack-section {
-      position: relative;
-      width: 100%;
-      margin: 0 0 120px;
-    }
-
-    .sticky-wrap {
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      width: 100%;
-      padding: 0;
-      overflow: hidden;
-    }
-
-    .cards-container {
-      width: 100%;
-      height: 100%;
+    /* ===== CARD BRAND (IndIWeb – outline vrstva + plná vrstva + hover) ===== */
+    #brand.stack-panel { display: flex; align-items: center; justify-content: center; padding: clamp(28px,4vw,44px); }
+    .card-brand {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 20px; width: 100%;
       position: relative;
     }
-
-    .stack-panel {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      background: var(--white);
-      display: flex;
-      flex-direction: column;
-      overflow: auto;
-      will-change: transform, opacity;
-      transform-origin: top center;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-      backface-visibility: hidden;
+    .card-brand .scene {
+      position: relative;
+      cursor: default;
+      user-select: none;
     }
-
-    .stack-panel::-webkit-scrollbar {
-      width: 0;
-      height: 0;
-      display: none;
+    .card-brand .text-wrapper {
+      position: relative;
+      display: inline-block;
     }
-
-    .stack-panel::before {
-      content: '';
+    .card-brand .text-back {
+      font-family: 'DM Sans', sans-serif;
+      font-size: clamp(80px, 14vw, 200px);
+      font-weight: 200;
+      letter-spacing: 0.05em;
+      color: transparent;
+      -webkit-text-stroke: 1.5px rgba(255,255,255,0.25);
       position: absolute;
       top: 0;
       left: 0;
-      right: 0;
-      height: 5px;
-      background: var(--accent);
-      opacity: 0.8;
-    }
-
-    .panel-hero {
-      background: linear-gradient(180deg, var(--slate-50) 0%, var(--white) 100%);
-    }
-
-    .panel-personas {
-      background: linear-gradient(160deg, #ffffff 0%, #f7fbfb 100%);
-    }
-
-    .panel-process {
-      background: linear-gradient(160deg, #ffffff 0%, #f8fafc 100%);
-    }
-
-    .panel-contact {
-      background: linear-gradient(160deg, #ffffff 0%, #f2fbfa 100%);
-    }
-
-    .panel-inner {
-      width: min(1400px, 100%);
-      margin: 0 auto;
-      min-height: 100%;
-      padding: 88px 12px 34px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .card-label {
-      font-size: 0.76rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--accent);
-      font-weight: 700;
-      margin-bottom: 12px;
-    }
-
-    .card-title {
-      font-size: clamp(2.05rem, 3.6vw, 3.05rem);
-      letter-spacing: -0.03em;
-      color: var(--slate-950);
-      line-height: 1.2;
-      margin-bottom: 12px;
-    }
-
-    .card-subtitle {
-      color: var(--slate-600);
-      font-size: 1.14rem;
-      max-width: 940px;
-      margin-bottom: 22px;
-    }
-
-    .card-content {
-      padding-right: 8px;
-    }
-
-    .card-content::-webkit-scrollbar {
-      width: 0;
-      height: 0;
-      display: none;
-    }
-
-    .personas-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 20px;
-    }
-
-    .persona-card {
-      background: #ffffff;
-      border: 1px solid var(--slate-200);
-      border-radius: 16px;
-      padding: 30px;
-    }
-
-    .persona-icon {
-      width: 44px;
-      height: 44px;
-      background: var(--accent-light);
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.25rem;
-      margin-bottom: 14px;
-    }
-
-    .persona-card h3 {
-      font-size: 1.16rem;
-      color: var(--slate-950);
-      margin-bottom: 10px;
-      letter-spacing: -0.02em;
-    }
-
-    .persona-card p {
-      font-size: 0.98rem;
-      color: var(--slate-600);
-      line-height: 1.65;
-      margin-bottom: 14px;
-    }
-
-    .persona-features {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 7px;
-    }
-
-    .persona-features li {
-      display: flex;
-      align-items: flex-start;
-      gap: 8px;
-      font-size: 0.86rem;
-      color: var(--slate-700);
-      line-height: 1.5;
-    }
-
-    .persona-features li::before {
-      content: '✓';
-      color: var(--green-500);
-      font-weight: 700;
-      flex-shrink: 0;
-      margin-top: 1px;
-    }
-
-    .process-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 20px;
-    }
-
-    .process-step {
-      background: #ffffff;
-      border: 1px solid var(--slate-200);
-      border-radius: 16px;
-      padding: 32px;
-    }
-
-    .step-number {
-      width: 54px;
-      height: 54px;
-      background: var(--accent-light);
-      border-radius: 50%;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 14px;
-    }
-
-    .step-number span {
-      color: var(--accent);
-      font-weight: 800;
-      font-size: 1.1rem;
-    }
-
-    .process-step h3 {
-      color: var(--slate-950);
-      margin-bottom: 8px;
-      font-size: 1.15rem;
-    }
-
-    .process-step p {
-      font-size: 0.98rem;
-      color: var(--slate-600);
-      line-height: 1.65;
-    }
-
-    .contact-wrapper {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 26px;
-      align-items: center;
-    }
-
-    .contact-content > p {
-      font-size: 1rem;
-      color: var(--slate-600);
-      line-height: 1.7;
-      margin-bottom: 22px;
-    }
-
-    .trust-points {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    .trust-point {
-      display: flex;
-      gap: 12px;
-      align-items: flex-start;
-      border: 1px solid var(--slate-200);
-      border-radius: 12px;
-      padding: 12px 14px;
-      background: #fff;
-    }
-
-    .trust-point-icon {
-      width: 38px;
-      height: 38px;
-      border-radius: 10px;
-      background: var(--green-100);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .trust-point-text h4 {
-      font-size: 0.92rem;
-      color: var(--slate-900);
-      margin-bottom: 2px;
-    }
-
-    .trust-point-text p {
-      font-size: 0.82rem;
-      color: var(--slate-500);
-      line-height: 1.5;
-    }
-
-    .contact-form-wrapper {
-      background: #ffffff;
-      border: 1px solid var(--slate-200);
-      border-radius: 14px;
-      padding: 34px;
-    }
-
-    .contact-form-wrapper h3 {
-      font-size: 1.1rem;
-      color: var(--slate-950);
-      margin-bottom: 6px;
-    }
-
-    .contact-form-wrapper > p {
-      font-size: 0.9rem;
-      color: var(--slate-500);
-      margin-bottom: 18px;
-    }
-
-    .form-group {
-      margin-bottom: 20px;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: var(--slate-700);
-      margin-bottom: 8px;
-    }
-
-    .form-group input,
-    .form-group select,
-    .form-group textarea {
-      width: 100%;
-      padding: 14px 16px;
-      border: 1.5px solid var(--slate-200);
-      border-radius: 10px;
-      font-size: 0.95rem;
-      font-family: inherit;
-      background: var(--white);
-      color: var(--slate-900);
-      transition: all var(--transition);
-      outline: none;
-    }
-
-    .form-group input:focus,
-    .form-group select:focus,
-    .form-group textarea:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 4px var(--accent-light);
-    }
-
-    .form-group input::placeholder,
-    .form-group textarea::placeholder {
-      color: var(--slate-400);
-    }
-
-    .form-group textarea {
-      resize: vertical;
-      min-height: 100px;
-    }
-
-    .form-group select {
-      appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 14px center;
-      padding-right: 40px;
-    }
-
-    .form-submit {
-      width: 100%;
-      padding: 16px;
-      margin-top: 8px;
-    }
-
-    .form-note {
-      text-align: center;
-      font-size: 0.8rem;
-      color: var(--slate-400);
-      margin-top: 16px;
-    }
-
-    .form-note svg {
-      display: inline;
-      vertical-align: middle;
-      margin-right: 4px;
-    }
-
-    .progress-dots {
-      position: fixed;
-      right: 18px;
-      top: 50%;
-      transform: translateY(-50%);
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      z-index: 120;
-      opacity: 0;
+      white-space: nowrap;
+      transform: translate(12px, 10px);
+      transition:
+        transform 0.45s cubic-bezier(0.23, 1, 0.32, 1),
+        -webkit-text-stroke 0.45s ease,
+        font-weight 0.45s ease,
+        opacity 0.45s ease;
       pointer-events: none;
-      transition: opacity var(--transition);
+    }
+    .card-brand .text-front {
+      font-family: 'DM Sans', sans-serif;
+      font-size: clamp(80px, 14vw, 200px);
+      font-weight: 200;
+      letter-spacing: 0.05em;
+      color: #ffffff;
+      position: relative;
+      white-space: nowrap;
+      transition:
+        font-weight 0.45s cubic-bezier(0.23, 1, 0.32, 1),
+        letter-spacing 0.45s cubic-bezier(0.23, 1, 0.32, 1),
+        text-shadow 0.45s ease;
+    }
+    .card-brand .scene:hover .text-front {
+      font-weight: 900;
+      letter-spacing: 0.03em;
+      text-shadow:
+        0 0 60px rgba(255,255,255,0.15),
+        0 0 120px rgba(255,255,255,0.07);
+    }
+    .card-brand .scene:hover .text-back {
+      font-weight: 900;
+      transform: translate(22px, 18px);
+      -webkit-text-stroke: 1.5px rgba(255,255,255,0.12);
+      opacity: 0.7;
+    }
+    .card-brand::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.03) 2px,
+        rgba(0,0,0,0.03) 4px
+      );
+      pointer-events: none;
+      z-index: 1;
     }
 
-    .progress-dots.visible {
-      opacity: 1;
+    /* ===== CENTER CARDS (liquid glass) ===== */
+    .stack-section {
+      position: relative; width: 100%;
+      border-top: 1px solid var(--border);
+    }
+    .sticky-wrap {
+      position: sticky; top: 0; height: 100vh; width: 100%;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden; padding: 80px 12px 28px;
+    }
+    .cards-container {
+      width: min(1180px, 96vw); height: min(640px, calc(100vh - 120px));
+      position: relative; perspective: 1200px;
+    }
+    .stack-panel {
+      position: absolute; inset: 0;
+      background: rgba(255,255,255,0.03);
+      backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,0.06) inset,
+        0 32px 64px -12px rgba(0,0,0,0.4),
+        0 8px 24px -8px rgba(0,0,0,0.5);
+      padding: clamp(28px,4vw,44px);
+      display: flex; flex-direction: column; overflow: auto;
+      will-change: transform, opacity; backface-visibility: hidden;
+      pointer-events: none; scrollbar-width: none; -ms-overflow-style: none;
+    }
+    .stack-panel::-webkit-scrollbar { width:0; height:0; display:none; }
+    .stack-panel.is-active {
       pointer-events: auto;
+      background: rgba(255,255,255,0.05);
+      border-color: var(--border-strong);
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,0.06) inset,
+        0 40px 80px -16px rgba(0,0,0,0.4),
+        0 12px 32px -8px rgba(0,0,0,0.4);
     }
+    .card-label {
+      font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--gray-400); font-weight: 700; margin-bottom: 12px;
+    }
+    .card-title {
+      font-size: clamp(1.9rem,4vw,3.1rem); letter-spacing: -0.03em;
+      color: var(--white); line-height: 1.18; margin-bottom: 10px;
+    }
+    .card-subtitle { color: var(--gray-500); font-size: clamp(1.08rem,1.6vw,1.2rem); margin-bottom: 24px; max-width: 860px; }
+    .card-content { display: grid; gap: 14px; flex: 1; }
+    .info-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 14px; }
+    .info-box {
+      background: rgba(255,255,255,0.03);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border);
+      border-radius: 20px; padding: 20px;
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.03) inset;
+    }
+    .info-box h3 { color: var(--white); font-size: 1rem; margin-bottom: 8px; }
+    .info-box p, .info-box li { color: var(--gray-500); font-size: 0.92rem; line-height: 1.55; }
+    .info-box ul { margin-left: 16px; display: grid; gap: 6px; }
+    .hero-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    /* Contact form */
+    .contact-form { display: grid; gap: 16px; max-width: 520px; margin: 0 auto; }
+    .contact-form .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media (max-width: 520px) { .contact-form .form-row { grid-template-columns: 1fr; } }
+    .contact-form label { display: block; font-size: 0.88rem; font-weight: 500; color: var(--gray-500); margin-bottom: 6px; }
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%; padding: 14px 18px; border-radius: 12px;
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.14);
+      color: var(--white); font-family: inherit; font-size: 1rem;
+      transition: border-color var(--transition), background var(--transition);
+    }
+    .contact-form input::placeholder,
+    .contact-form textarea::placeholder { color: rgba(255,255,255,0.35); }
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+      outline: none; border-color: var(--border-strong); background: rgba(255,255,255,0.06);
+    }
+    .contact-form textarea { min-height: 120px; resize: vertical; }
+    .contact-email {
+      display: block; margin-bottom: 20px; font-size: 0.95rem; color: var(--gray-500);
+    }
+    .contact-email a { color: var(--white); text-decoration: none; font-weight: 600; }
+    .contact-email a:hover { text-decoration: underline; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px; padding: 18px 36px; border-radius: 12px;
+      font-size: 1.05rem; font-weight: 600; text-decoration: none; cursor: pointer;
+      border: none; transition: all var(--transition); font-family: inherit;
+    }
+    .btn-primary {
+      background: var(--white); color: var(--bg);
+      border: 1px solid var(--border-strong);
+    }
+    .btn-primary:hover { background: var(--gray-200); transform: translateY(-2px); }
+    .btn-secondary { background: transparent; color: var(--white); border: 1.5px solid var(--border); }
+    .btn-secondary:hover { border-color: var(--border-strong); transform: translateY(-2px); }
 
-    .dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: rgba(15, 23, 42, 0.2);
-      transition: transform var(--transition), background var(--transition);
-      cursor: pointer;
+    /* ===== DOTS ===== */
+    .progress-dots {
+      position: fixed; right: 18px; top: 50%; transform: translateY(-50%);
+      display: flex; flex-direction: column; gap: 8px; z-index: 120;
+      opacity: 0; pointer-events: none; transition: opacity var(--transition);
     }
-
-    .dot.active {
-      background: var(--accent);
-      transform: scale(1.45);
-    }
+    .progress-dots.visible { opacity: 1; pointer-events: auto; }
+    .pdot { width: 8px; height: 8px; border-radius: 999px; background: var(--gray-600); transition: transform var(--transition), background var(--transition); cursor: pointer; }
+    .pdot.active { background: var(--white); transform: scale(1.45); }
 
     /* ===== FOOTER ===== */
-    .footer {
-      padding: 40px 0;
-      background: var(--slate-950);
-      color: var(--slate-400);
-    }
-
-    .footer .container {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 16px;
-    }
-
-    .footer-logo {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--white);
-      text-decoration: none;
-    }
-
-    .footer-logo span {
-      color: var(--accent);
-    }
-
-    .footer p {
-      font-size: 0.85rem;
-    }
-
-    .footer-links {
-      display: flex;
-      gap: 24px;
-      list-style: none;
-    }
-
-    .footer-links a {
-      color: var(--slate-400);
-      text-decoration: none;
-      font-size: 0.85rem;
-      transition: color var(--transition);
-    }
-
-    .footer-links a:hover {
-      color: var(--white);
-    }
+    .footer { padding: 40px 0; background: var(--bg); color: var(--gray-500); border-top: 1px solid var(--border); }
+    .footer .container { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+    .footer-logo { display: flex; align-items: center; text-decoration: none; }
+    .footer-logo .brand-text { font-size: 1.1rem; font-weight: 700; color: var(--white); letter-spacing: -0.01em; line-height: 1; }
+    .footer-logo .brand-text span { color: var(--white); }
+    .footer p { font-size: 0.85rem; }
+    .footer-links { display: flex; gap: 24px; list-style: none; }
+    .footer-links a { color: var(--gray-500); text-decoration: none; font-size: 0.85rem; transition: color var(--transition); }
+    .footer-links a:hover { color: var(--white); }
 
     /* ===== RESPONSIVE ===== */
     @media (max-width: 1024px) {
-      .personas-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .process-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .contact-wrapper {
-        grid-template-columns: 1fr;
-      }
+      .info-grid { grid-template-columns: 1fr 1fr; }
     }
-
     @media (max-width: 768px) {
+      .hero-top { padding: 100px 0 60px; }
+      .hero-proof { flex-direction: column; gap: 8px; }
+      .hero-proof .hero-stat:not(:first-child)::before { display: none; }
       .nav-links {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(255, 255, 255, 0.98);
-        backdrop-filter: blur(20px);
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: 24px;
-        z-index: 99;
+        display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(10,10,10,0.98); backdrop-filter: blur(20px);
+        flex-direction: column; justify-content: center; align-items: center; gap: 24px; z-index: 99;
       }
-
-      .nav-links.open {
-        display: flex;
-      }
-
-      .nav-links a {
-        font-size: 1.2rem;
-      }
-
-      .mobile-toggle {
-        display: block;
-        z-index: 101;
-      }
-
-      .mobile-toggle.open span:nth-child(1) {
-        transform: rotate(45deg) translate(6px, 6px);
-      }
-
-      .mobile-toggle.open span:nth-child(2) {
-        opacity: 0;
-      }
-
-      .mobile-toggle.open span:nth-child(3) {
-        transform: rotate(-45deg) translate(6px, -6px);
-      }
-
-      .hero {
-        padding: 92px 0 50px;
-      }
-
-      .stack-section {
-        height: auto !important;
-        margin: 0 0 70px;
-      }
-
-      .sticky-wrap {
-        position: relative;
-        top: auto;
-        height: auto;
-        padding: 0;
-        overflow: visible;
-      }
-
-      .cards-container {
-        height: auto !important;
-        display: grid;
-        gap: 14px;
-      }
-
-      .stack-panel {
-        position: relative;
-        inset: auto;
-        transform: none !important;
-        opacity: 1 !important;
-        min-height: auto;
-        padding: 0;
-      }
-
-      .panel-inner {
-        padding: 88px 14px 26px;
-        min-height: auto;
-        justify-content: flex-start;
-      }
-
-      .hero-proof {
-        flex-direction: column;
-        gap: 12px;
-      }
-
-      .hero-proof .divider {
-        display: none;
-      }
-
-      .progress-dots {
-        display: none;
-      }
-
-      .footer .container {
-        flex-direction: column;
-        text-align: center;
-      }
+      .nav-links.open { display: flex; }
+      .nav-links a { font-size: 1.2rem; }
+      .mobile-toggle { display: block; z-index: 101; }
+      .mobile-toggle.open span:nth-child(1) { transform: rotate(45deg) translate(6px,6px); }
+      .mobile-toggle.open span:nth-child(2) { opacity: 0; }
+      .mobile-toggle.open span:nth-child(3) { transform: rotate(-45deg) translate(6px,-6px); }
+      .stack-section { height: auto !important; margin: 0 0 70px; }
+      .sticky-wrap { position: relative; top: auto; height: auto; padding: 88px 12px 0; overflow: visible; }
+      .cards-container { height: auto !important; display: grid; gap: 16px; width: 100%; }
+      .stack-panel { position: relative; inset: auto; transform: none !important; opacity: 1 !important; min-height: auto; pointer-events: auto; }
+      .progress-dots { display: none; }
+      .footer .container { flex-direction: column; text-align: center; }
     }
-
     @media (max-width: 480px) {
-      .hero-buttons {
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      .hero-buttons .btn {
-        justify-content: center;
-      }
-
-      .persona-card {
-        padding: 16px;
-      }
+      .info-grid { grid-template-columns: 1fr; }
+      .hero-buttons { flex-direction: column; align-items: stretch; }
+      .hero-buttons .btn { justify-content: center; }
     }
   </style>
 </head>
 <body>
+  <!-- BG SCENE (monitor + klávesnice vpředu) -->
+  <div id="bg-scene" aria-hidden="true">
+    <div class="bg-layer"></div>
+    <div class="bg-floor"></div>
+    <div class="bg-monitor">
+      <div class="bg-mon-frame">
+        <div class="bg-screen">
+          <div class="bg-ed-hdr">
+            <div class="bg-dot r"></div><div class="bg-dot y"></div><div class="bg-dot g"></div>
+            <div class="bg-tab on">index.html</div><div class="bg-tab">style.css</div><div class="bg-tab">app.js</div>
+          </div>
+          <div class="bg-ed-body">
+            <div class="bg-sidebar">
+              <div class="bg-si" style="color:#484f58">📁 indiweb</div>
+              <div class="bg-si a">&nbsp;&nbsp;📄 index.html</div>
+              <div class="bg-si">&nbsp;&nbsp;🎨 style.css</div>
+              <div class="bg-si">&nbsp;&nbsp;⚡ app.js</div>
+            </div>
+            <div class="bg-code-area">
+              <div class="bg-ln" id="bgLn"></div>
+              <div class="bg-cc" id="bgCc"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="bg-mon-neck"></div>
+      <div class="bg-mon-base"></div>
+    </div>
+    <div class="bg-keyboard" id="bgKbd">
+      <div class="bg-krows">
+        <div class="bg-krow" id="bgKr0"><div class="bg-k"></div><div class="bg-k"></div><div class="bg-k"></div><div class="bg-k"></div><div class="bg-k"></div><div class="bg-k"></div><div class="bg-k"></div><div class="bg-k"></div><div class="bg-k"></div><div class="bg-k"></div><div class="bg-k"></div><div class="bg-k w"></div></div>
+        <div class="bg-krow" id="bgKr1"><div class="bg-k w"></div><div class="bg-k"></div><div class="bg-k"></div><div class="bg-k"></div><div class="bg-k"></div><div class="bg-k"></div><div class="bg-k"></div><div class="bg-k"></div><div class="bg-k"></div><div class="bg-k"></div><div class="bg-k"></div></div>
+        <div class="bg-krow" id="bgKr2"><div class="bg-k w"></div><div class="bg-k"></div><div class="bg-k"></div><div class="bg-k"></div><div class="bg-k"></div><div class="bg-k"></div><div class="bg-k"></div><div class="bg-k"></div><div class="bg-k w"></div></div>
+        <div class="bg-krow" id="bgKr3"><div class="bg-k ww"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HERO (top) -->
+  <section class="hero-top" id="heroTop">
+    <div class="container">
+      <div class="hero-badge">
+        Přijímáme nové projekty
+      </div>
+      <span id="indiwebHero" class="indiweb-hero" aria-hidden="true"><span class="indiweb-thin">IndI</span><span class="indiweb-bold">Web</span></span>
+      <h1 class="hero-h1">Tvoříme weby, které vám <span class="hero-h1-highlight">šetří čas, prodávají a dají vám svobodu</span></h1>
+      <p class="hero-p">Ať už řídíte firmu, vedete marketing nebo teprve začínáte podnikat – postavíme vám web, který pracuje za vás.</p>
+      <div class="hero-buttons">
+        <a href="#contact" class="btn btn-primary">Chci nový web</a>
+        <a href="#contact" class="btn btn-secondary">Konzultace zdarma</a>
+      </div>
+      <div class="hero-proof">
+        <span class="hero-stat"><strong>50+</strong> projektů</span>
+        <span class="hero-stat"><strong>4,9 ★</strong> hodnocení</span>
+        <span class="hero-stat"><strong>14 dní</strong> dodací lhůta</span>
+      </div>
+    </div>
+  </section>
 
   <!-- NAVBAR -->
   <nav class="navbar" id="navbar">
     <div class="container">
-      <a href="#" class="logo">web<span>craft</span></a>
+      <a href="#heroTop" class="logo"><span class="brand-text">Indi<span>Web</span></span></a>
       <ul class="nav-links" id="navLinks">
-        <li><a href="#hero">Hero</a></li>
+        <li><a href="#heroTop">Úvod</a></li>
+        <li><a href="#personas">Pro koho</a></li>
         <li><a href="#process">Jak pracujeme</a></li>
-        <li><a href="#contact" class="nav-cta">Napište nám</a></li>
+        <li><a href="#contact" class="nav-cta">Kontakt</a></li>
       </ul>
-      <button class="mobile-toggle" id="mobileToggle" aria-label="Menu">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
+      <button class="mobile-toggle" id="mobileToggle" aria-label="Menu"><span></span><span></span><span></span></button>
     </div>
   </nav>
 
-  <!-- STACK SCROLL SECTIONS -->
+  <!-- CENTER CARDS -->
   <section class="stack-section" id="stackSection">
     <div class="sticky-wrap">
       <div class="cards-container" id="cardsContainer">
-        <article class="stack-panel panel-hero" id="hero">
-          <section class="hero">
-            <div class="container">
-              <div class="hero-badge">Přijímáme nové projekty</div>
-              <h1>
-                Tvoříme weby, které vám<br>
-                <span class="highlight">šetří čas, prodávají<br>a&nbsp;dají vám svobodu</span>
-              </h1>
-              <p>
-                Ať už řídíte firmu, vedete marketing nebo teprve začínáte podnikat –
-                postavíme vám web, který pracuje za vás. Bez technického stresu,
-                bez čekání měsíce na výsledek.
-              </p>
-              <div class="hero-buttons">
-                <a href="#contact" class="btn btn-primary">
-                  Chci nový web
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                </a>
-                <a href="#contact" class="btn btn-secondary">Konzultace zdarma</a>
-              </div>
-              <div class="hero-proof">
-                <div class="stat"><strong>50+</strong> dokončených projektů</div>
-                <div class="divider"></div>
-                <div class="stat"><strong>4,9 ★</strong> průměrné hodnocení</div>
-                <div class="divider"></div>
-                <div class="stat"><strong>14 dní</strong> průměrná dodací lhůta</div>
-              </div>
-            </div>
-          </section>
-        </article>
-
-        <article class="stack-panel panel-personas" id="personas">
-          <div class="panel-inner">
-            <div class="card-label">Pro koho tvoříme</div>
-            <h2 class="card-title">Web na míru vašim potřebám</h2>
-            <p class="card-subtitle">Každý potřebuje něco jiného. Proto nasloucháme a stavíme řešení, které přesně sedne vaší situaci.</p>
-            <div class="card-content">
-              <div class="personas-grid">
-                <div class="persona-card">
-                  <div class="persona-icon">🏢</div>
-                  <h3>Web kompletně na klíč</h3>
-                  <p>Nemáte čas řešit texty, fotky a technologie? Postaráme se o vše od A do Z.</p>
-                  <ul class="persona-features">
-                    <li>Texty a fotografie připravíme za vás</li>
-                    <li>Profesionální vzhled, který buduje důvěru</li>
-                    <li>Žádné IT starosti, vše vyřešíme my</li>
-                  </ul>
-                </div>
-                <div class="persona-card">
-                  <div class="persona-icon">📊</div>
-                  <h3>Výkon, rychlost a nezávislost</h3>
-                  <p>Moderní systém, rychlé načítání a svoboda upravovat kampaně bez čekání.</p>
-                  <ul class="persona-features">
-                    <li>Rychlé načítání pro lepší výkon kampaní</li>
-                    <li>Snadná správa obsahu bez vývojáře</li>
-                    <li>Napojení na analytiku a reklamní systémy</li>
-                  </ul>
-                </div>
-                <div class="persona-card">
-                  <div class="persona-icon">🚀</div>
-                  <h3>Profesionální start bez statisíců</h3>
-                  <p>Online vizitka, která nevypadá levně, ale nepohltí celý začátečnický rozpočet.</p>
-                  <ul class="persona-features">
-                    <li>Cenově dostupné řešení bez kompromisů</li>
-                    <li>Rychlý start bez technického stresu</li>
-                    <li>Okamžitá důvěryhodnost u prvních klientů</li>
-                  </ul>
-                </div>
+        <article class="stack-panel" id="brand">
+          <div class="card-brand">
+            <div class="scene">
+              <div class="text-wrapper">
+                <div class="text-back">IndIWeb</div>
+                <div class="text-front">IndIWeb</div>
               </div>
             </div>
           </div>
         </article>
 
-        <article class="stack-panel panel-process" id="process">
-          <div class="panel-inner">
-            <div class="card-label">Jak pracujeme</div>
-            <h2 class="card-title">Od prvního hovoru k hotovému webu</h2>
-            <p class="card-subtitle">Žádný IT žargon. Žádné překvapení. Jen jasný proces ve 3 krocích.</p>
-            <div class="card-content">
-              <div class="process-grid">
-                <div class="process-step">
-                  <div class="step-number"><span>1</span></div>
-                  <h3>Krátký hovor zdarma</h3>
-                  <p>Zavoláme si na 15 minut. Zjistíme, co přesně potřebujete, a řekneme vám, jestli a jak vám můžeme pomoct.</p>
-                </div>
-                <div class="process-step">
-                  <div class="step-number"><span>2</span></div>
-                  <h3>Návrh a realizace</h3>
-                  <p>Připravíme grafický návrh, odsouhlasíme ho s vámi a web postavíme. Průběžně ukazujeme pokrok, bez čekání v temnotě.</p>
-                </div>
-                <div class="process-step">
-                  <div class="step-number"><span>3</span></div>
-                  <h3>Spuštění a zaškolení</h3>
-                  <p>Web spustíme, zaškolíme vás na správu obsahu a zůstaneme k dispozici, kdykoliv budete potřebovat.</p>
-                </div>
-              </div>
+        <article class="stack-panel" id="hero">
+          <div class="card-label">Weby, které prodávají</div>
+          <h1 class="card-title">Tvoříme moderní weby pro firmy, markeťáky i podnikatele</h1>
+          <p class="card-subtitle">Postavíme vám web, který pracuje za vás. Bez technického stresu, bez čekání měsíce na výsledek.</p>
+          <div class="card-content">
+            <div class="info-grid">
+              <div class="info-box"><h3>Rychlá realizace</h3><p>Od prvního hovoru po spuštění typicky v horizontu 14 dní.</p></div>
+              <div class="info-box"><h3>Bez IT žargonu</h3><p>Vše vysvětlujeme lidsky, stručně a srozumitelně.</p></div>
+              <div class="info-box"><h3>Výsledek, ne chaos</h3><p>Konverzní struktura, jasné CTA a měřitelný výkon.</p></div>
+            </div>
+            <div class="hero-buttons">
+              <a href="#contact" class="btn btn-primary">Chci nový web</a>
+              <a href="#contact" class="btn btn-secondary">Konzultace zdarma</a>
             </div>
           </div>
         </article>
 
-        <article class="stack-panel panel-contact" id="contact">
-          <div class="panel-inner">
-            <div class="card-label">Konzultace a poptávka</div>
-            <h2 class="card-title">S čím vám můžeme pomoci?</h2>
-            <p class="card-subtitle">Úvodní hovor vás k ničemu nezavazuje. Bez složité terminologie, jednoduše a lidsky.</p>
-            <div class="card-content">
-              <div class="contact-wrapper">
-              <div class="contact-content">
-                <p>
-                  Prostě si popovídáme o tom, co potřebujete, a navrhneme řešení,
-                  které dává smysl pro váš rozpočet i cíle.
-                </p>
-                <div class="trust-points">
-                  <div class="trust-point">
-                    <div class="trust-point-icon">🤝</div>
-                    <div class="trust-point-text">
-                      <h4>Bez závazků</h4>
-                      <p>První konzultace je zdarma. Žádné smlouvy, žádný tlak.</p>
-                    </div>
-                  </div>
-                  <div class="trust-point">
-                    <div class="trust-point-icon">💬</div>
-                    <div class="trust-point-text">
-                      <h4>Srozumitelně</h4>
-                      <p>Mluvíme lidsky, ne v kódech. Vše vysvětlíme tak, aby to dávalo smysl.</p>
-                    </div>
-                  </div>
-                  <div class="trust-point">
-                    <div class="trust-point-icon">⚡</div>
-                    <div class="trust-point-text">
-                      <h4>Rychlá odpověď</h4>
-                      <p>Ozveme se vám do 24 hodin. Většinou mnohem dříve.</p>
-                    </div>
-                  </div>
+        <article class="stack-panel" id="personas">
+          <div class="card-label">Pro koho tvoříme</div>
+          <h2 class="card-title">Každá karta řeší jiný typ klienta</h2>
+          <p class="card-subtitle">Stavíme řešení podle role a potřeb člověka na druhé straně.</p>
+          <div class="card-content">
+            <div class="info-grid">
+              <div class="info-box"><h3>Majitel firmy</h3><ul><li>Web na klíč bez starostí</li><li>Texty a vizuály zajistíme</li><li>Profesionální dojem pro partnery</li></ul></div>
+              <div class="info-box"><h3>Marketingový manažer</h3><ul><li>Rychlý a škálovatelný web</li><li>Snadné úpravy bez čekání</li><li>Připraveno na kampaně i analytiku</li></ul></div>
+              <div class="info-box"><h3>Začínající podnikatel</h3><ul><li>Důvěryhodný start bez statisíců</li><li>Rychlé spuštění projektu</li><li>Jasná prezentace služeb</li></ul></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="stack-panel" id="process">
+          <div class="card-label">Jak pracujeme</div>
+          <h2 class="card-title">Jasný proces ve 3 krocích</h2>
+          <p class="card-subtitle">Žádné překvapení. Každý krok má jasný výstup a vždy víš, co následuje.</p>
+          <div class="card-content">
+            <div class="info-grid">
+              <div class="info-box"><h3>1) Krátký hovor</h3><p>15 minut na pochopení cíle, rozpočtu a priorit projektu.</p></div>
+              <div class="info-box"><h3>2) Návrh a realizace</h3><p>UX/UI návrh, schválení a vývoj webu bez zbytečných průtahů.</p></div>
+              <div class="info-box"><h3>3) Spuštění a péče</h3><p>Nasazení, zaškolení a podpora po launchi.</p></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="stack-panel" id="contact">
+          <div class="card-label">Konzultace a poptávka</div>
+          <h2 class="card-title">S čím vám můžeme pomoci?</h2>
+          <p class="card-subtitle">Úvodní hovor je nezávazný. Napište nám a ozveme se obvykle do 24 hodin.</p>
+          <div class="card-content">
+            <span class="contact-email">E-mail: <a href="mailto:info.indiweb@gmail.com">info.indiweb@gmail.com</a></span>
+            <form class="contact-form" id="contactForm">
+              <div class="form-row">
+                <div>
+                  <label for="contact-name">Jméno</label>
+                  <input type="text" id="contact-name" name="name" placeholder="Vaše jméno" required>
+                </div>
+                <div>
+                  <label for="contact-email-input">E-mail</label>
+                  <input type="email" id="contact-email-input" name="email" placeholder="vas@email.cz" required>
                 </div>
               </div>
-              <div class="contact-form-wrapper">
-                <h3>Nezávazná poptávka</h3>
-                <p>Vyplňte formulář a my se vám ozveme.</p>
-                <form id="contactForm" onsubmit="handleSubmit(event)">
-                  <div class="form-group">
-                    <label for="name">Jméno</label>
-                    <input type="text" id="name" name="name" placeholder="Jan Novák" required>
-                  </div>
-                  <div class="form-group">
-                    <label for="email">E-mail</label>
-                    <input type="email" id="email" name="email" placeholder="jan@firma.cz" required>
-                  </div>
-                  <div class="form-group">
-                    <label for="need">S čím vám můžeme pomoci?</label>
-                    <select id="need" name="need" required>
-                      <option value="" disabled selected>Vyberte možnost…</option>
-                      <option value="novy-web">Potřebuji nový web od nuly</option>
-                      <option value="redesign">Chci modernizovat stávající web</option>
-                      <option value="rychlost">Můj web je pomalý a nefunguje správně</option>
-                      <option value="marketing">Potřebuji web pro kampaně a marketing</option>
-                      <option value="eshop">Chci e-shop nebo online prodej</option>
-                      <option value="nevim">Nevím přesně, potřebuji poradit</option>
-                    </select>
-                  </div>
-                  <div class="form-group">
-                    <label for="message">Zpráva <span style="font-weight:400;color:var(--slate-400)">(nepovinné)</span></label>
-                    <textarea id="message" name="message" placeholder="Popište nám stručně, co potřebujete…"></textarea>
-                  </div>
-                  <button type="submit" class="btn btn-primary form-submit">
-                    Odeslat poptávku
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                  </button>
-                  <p class="form-note">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                    Vaše údaje jsou v bezpečí. Nesdílíme je s nikým třetím.
-                  </p>
-                </form>
+              <div>
+                <label for="contact-message">Zpráva</label>
+                <textarea id="contact-message" name="message" placeholder="Popište váš projekt nebo otázku..." required></textarea>
               </div>
-            </div>
+              <button type="submit" class="btn btn-primary">Odeslat zprávu</button>
+            </form>
           </div>
         </article>
       </div>
@@ -1094,280 +593,229 @@
   </section>
 
   <!-- FOOTER -->
-  <footer class="footer">
+  <footer class="footer" id="footer">
     <div class="container">
-      <a href="#" class="footer-logo">web<span>craft</span></a>
-      <p>&copy; 2026 webcraft. Všechna práva vyhrazena.</p>
-      <ul class="footer-links">
-        <li><a href="#">Ochrana osobních údajů</a></li>
-        <li><a href="#">Obchodní podmínky</a></li>
-      </ul>
+      <a href="#" class="footer-logo"><span class="brand-text">Indi<span>Web</span></span></a>
+      <p>&copy; 2026 IndiWeb. Všechna práva vyhrazena.</p>
+      <ul class="footer-links"><li><a href="#">Ochrana osobních údajů</a></li><li><a href="#">Obchodní podmínky</a></li></ul>
     </div>
   </footer>
 
-  <div class="progress-dots" id="dots">
-    <div class="dot active" data-i="0"></div>
-    <div class="dot" data-i="1"></div>
-    <div class="dot" data-i="2"></div>
-    <div class="dot" data-i="3"></div>
-  </div>
+  <div class="progress-dots" id="dots"><div class="pdot active" data-i="0"></div><div class="pdot" data-i="1"></div><div class="pdot" data-i="2"></div><div class="pdot" data-i="3"></div><div class="pdot" data-i="4"></div></div>
 
   <script>
-    // Navbar scroll effect
-    const navbar = document.getElementById('navbar');
-    window.addEventListener('scroll', () => {
-      navbar.classList.toggle('scrolled', window.scrollY > 40);
+    document.addEventListener('DOMContentLoaded',()=>{
+      const el=document.getElementById('indiwebHero');
+      if(el)el.classList.add('slide-in');
     });
 
-    // Mobile menu
-    const mobileToggle = document.getElementById('mobileToggle');
-    const navLinks = document.getElementById('navLinks');
-
-    mobileToggle.addEventListener('click', () => {
-      mobileToggle.classList.toggle('open');
-      navLinks.classList.toggle('open');
-      document.body.style.overflow = navLinks.classList.contains('open') ? 'hidden' : '';
-    });
-
-    navLinks.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        mobileToggle.classList.remove('open');
-        navLinks.classList.remove('open');
-        document.body.style.overflow = '';
-      });
-    });
-
-    // Stack scroll effect
-    const section = document.getElementById('stackSection');
-    const container = document.getElementById('cardsContainer');
-    const dotsWrap = document.getElementById('dots');
-    const allDots = dotsWrap.querySelectorAll('.dot');
-    const cards = [...container.querySelectorAll('.stack-panel')];
-    const cardCount = cards.length;
-    let perCardScroll = window.innerHeight * 0.85;
-    const panelIndexById = new Map(cards.map((panel, index) => [panel.id, index]));
-
-    const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
-    const lerp = (a, b, t) => a + (b - a) * t;
-
-    function setupStackHeight() {
-      if (window.innerWidth <= 768) {
-        section.style.height = 'auto';
-        return;
+    // ===== BG MONITOR + KEYBOARD (kód podle scrollu, blikání kláves) =====
+    const BG_LINES=[
+      [{t:'bg-cm',v:'// IndIWeb – weby, které prodávají'}],
+      [{t:'bg-kw',v:'const '},{t:'bg-plain',v:'brand '},{t:'bg-plain',v:'= '},{t:'bg-str',v:'"IndIWeb"'},{t:'bg-plain',v:';'}],
+      [{t:'bg-kw',v:'const '},{t:'bg-plain',v:'promise '},{t:'bg-plain',v:'= '},{t:'bg-str',v:'"šetří čas, prodávají"'},{t:'bg-plain',v:';'}],
+      [{t:'bg-plain',v:''}],
+      [{t:'bg-cm',v:'<!-- hero sekce -->'}],
+      [{t:'bg-tag',v:'<header>'},{t:'bg-attr',v:' class'},{t:'bg-plain',v:'='},{t:'bg-str',v:'"navbar"'},{t:'bg-tag',v:'>'},{t:'bg-plain',v:' ... '},{t:'bg-tag',v:'</header>'}],
+      [{t:'bg-tag',v:'<main>'},{t:'bg-plain',v:' ... '},{t:'bg-tag',v:'</main>'}],
+      [{t:'bg-plain',v:''}],
+      [{t:'bg-cm',v:'// konverze, CTA, měřitelné výsledky'}],
+      [{t:'bg-plain',v:'analytics.'},{t:'bg-fn',v:'track'},{t:'bg-plain',v:'('},{t:'bg-str',v:'"conversion"'},{t:'bg-plain',v:');'}],
+    ];
+    function bgLineText(i){return BG_LINES[i].map(t=>t.v).join('');}
+    const bgStream=[]; for(let i=0;i<BG_LINES.length;i++){const l=bgLineText(i).length; for(let c=0;c<l;c++)bgStream.push({i,c}); bgStream.push({i,c:l,nl:true});}
+    const BG_TOTAL=bgStream.length;
+    function bgEsc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+    function bgLineHtml(li,up){let h='',p=0; for(const t of BG_LINES[li]){if(p>=up)break; const tk=Math.min(t.v.length,up-p); h+=`<span class="${t.t}">${bgEsc(t.v.slice(0,tk))}</span>`; p+=t.v.length;} return h;}
+    function bgRender(cp){
+      const rev=new Array(BG_LINES.length).fill(0); let rem=cp;
+      for(let i=0;i<BG_LINES.length;i++){const l=bgLineText(i).length; if(rem<=0)break; rev[i]=Math.min(l,rem); rem-=l+1;}
+      let cur=BG_LINES.length-1;
+      for(let i=0;i<BG_LINES.length;i++){if(rev[i]<bgLineText(i).length){cur=i;break;}}
+      const s=Math.max(0,cur-8), e=Math.min(BG_LINES.length-1,s+12);
+      let ch='',ln='';
+      for(let i=s;i<=e;i++){
+        const l=bgLineText(i).length, r=rev[i], ic=i===cur;
+        ln+=`<div>${i+1}</div>`;
+        let h=bgLineHtml(i,r);
+        if(ic&&r<l)h+='<span class="bg-cursor-blink"></span>';
+        ch+=`<div class="bg-cl">${h}</div>`;
       }
-      perCardScroll = window.innerHeight * 0.85;
-      section.style.height = `${window.innerHeight + perCardScroll * (cardCount - 1)}px`;
+      const cc=document.getElementById('bgCc'), lnn=document.getElementById('bgLn');
+      if(cc)cc.innerHTML=ch; if(lnn)lnn.innerHTML=ln;
+    }
+    function bgFlashKey(){
+      const ids=['bgKr0','bgKr1','bgKr2','bgKr3'];
+      const row=document.getElementById(ids[Math.floor(Math.random()*ids.length)]);
+      if(!row)return;
+      const ks=row.querySelectorAll('.bg-k'); if(!ks.length)return;
+      const k=ks[Math.floor(Math.random()*ks.length)]; k.classList.add('pressed');
+      setTimeout(()=>k.classList.remove('pressed'),65);
+    }
+    let bgCp=0;
+    function bgOnScroll(){
+      const sy=window.scrollY, ms=Math.max(1,document.body.scrollHeight-window.innerHeight);
+      const prog=Math.max(0.18,Math.min(1,sy/ms));
+      const tgt=Math.round(prog*BG_TOTAL), delta=tgt-bgCp; bgCp=tgt;
+      bgRender(tgt);
+      if(Math.abs(delta)>0){ const f=Math.min(Math.abs(delta),4); for(let i=0;i<f;i++)setTimeout(bgFlashKey,i*20); }
+    }
+    bgRender(Math.round(BG_TOTAL*0.18));
+
+    // ===== NAVBAR =====
+    const navbar=document.getElementById('navbar');
+    const mobileToggle=document.getElementById('mobileToggle');
+    const navLinks=document.getElementById('navLinks');
+    mobileToggle.addEventListener('click',()=>{
+      mobileToggle.classList.toggle('open');navLinks.classList.toggle('open');
+      document.body.style.overflow=navLinks.classList.contains('open')?'hidden':'';
+    });
+    navLinks.querySelectorAll('a').forEach(link=>{
+      link.addEventListener('click',()=>{mobileToggle.classList.remove('open');navLinks.classList.remove('open');document.body.style.overflow='';});
+    });
+
+    // ===== CENTER CARDS STACK =====
+    const section=document.getElementById('stackSection');
+    const container=document.getElementById('cardsContainer');
+    const dotsWrap=document.getElementById('dots');
+    const allDots=dotsWrap.querySelectorAll('.pdot');
+    const cards=[...container.querySelectorAll('.stack-panel')];
+    const cardCount=cards.length;
+    const panelIndexById=new Map(cards.map((p,i)=>[p.id,i]));
+
+    const clamp=(v,lo,hi)=>Math.max(lo,Math.min(hi,v));
+    const lerp=(a,b,t)=>a+(b-a)*t;
+
+    let targetIdx=0, smoothIdx=0, rafId=null, isAnimating=false;
+    let perCardScroll=window.innerHeight*0.85;
+
+    function setupStackHeight(){
+      if(window.innerWidth<=768){section.style.height='auto';return;}
+      perCardScroll=window.innerHeight*0.85;
+      section.style.height=`${window.innerHeight+perCardScroll*(cardCount-1)}px`;
     }
 
-    let targetIdx = 0;
-    let smoothIdx = 0;
-    let rafId = null;
-    let isAnimating = false;
-    let wheelLocked = false;
-    let wheelUnlockTimer = null;
-    let scrollAnimRaf = null;
-    const snapDurationMs = 650;
-
-    function readTargetScroll() {
-      const scrolled = -section.getBoundingClientRect().top;
-      targetIdx = clamp(scrolled / perCardScroll, 0, cardCount - 1);
+    function readTargetScroll(){
+      const scrolled=-section.getBoundingClientRect().top;
+      targetIdx=clamp(scrolled/perCardScroll,0,cardCount-1);
       return scrolled;
     }
 
-    function renderStack(idx, scrolled) {
-      const active = Math.round(idx);
-      const inView =
-        scrolled > -window.innerHeight * 0.45 &&
-        scrolled < perCardScroll * (cardCount - 1) + window.innerHeight * 0.45;
-      dotsWrap.classList.toggle('visible', inView);
-      allDots.forEach((dot, i) => dot.classList.toggle('active', i === active));
+    function renderStack(idx,scrolled){
+      const active=Math.round(idx);
+      const inView=scrolled>-window.innerHeight*0.45&&scrolled<perCardScroll*(cardCount-1)+window.innerHeight*0.45;
+      dotsWrap.classList.toggle('visible',inView);
+      allDots.forEach((d,i)=>d.classList.toggle('active',i===active));
 
-      cards.forEach((card, i) => {
-        if (i === 0) {
-          const t = clamp(idx, 0, 1);
-          const op = lerp(1, 0, clamp((idx - 0.35) / 0.65, 0, 1));
-          const y = lerp(0, -44, t);
-          const s = lerp(1, 0.935, t);
-          card.style.transform = `translateY(${y}px) scale(${s})`;
-          card.style.opacity = op;
-          card.style.zIndex = cardCount;
-        } else {
-          const appear = clamp(idx - (i - 1), 0, 1);
-          const vanish = i < cardCount - 1 ? clamp((idx - i - 0.35) / 0.65, 0, 1) : 0;
-          let y;
-          let s;
-          let op;
-
-          if (appear < 1) {
-            y = lerp(104, 0, appear);
-            s = lerp(0.9, 1, appear);
-            op = lerp(0, 1, clamp(appear * 2.15, 0, 1));
-          } else {
-            y = lerp(0, -44, vanish);
-            s = lerp(1, 0.935, vanish);
-            op = lerp(1, 0, vanish);
-          }
-
-          card.style.transform = `translateY(${y}px) scale(${s})`;
-          card.style.opacity = op;
-          card.style.zIndex = cardCount - i + (appear >= 1 ? 100 : 0);
+      cards.forEach((card,i)=>{
+        if(i===0){
+          const t=clamp(idx,0,1);
+          const op=lerp(1,0,clamp((idx-0.35)/0.65,0,1));
+          const y=lerp(0,-44,t);
+          const s=lerp(1,0.935,t);
+          card.style.transform=`translateY(${y}px) scale(${s})`;
+          card.style.opacity=op;
+          card.style.zIndex=cardCount;
+        }else{
+          const appear=clamp(idx-(i-1),0,1);
+          const vanish=i<cardCount-1?clamp((idx-i-0.35)/0.65,0,1):0;
+          let y,s,op;
+          if(appear<1){y=lerp(104,0,appear);s=lerp(0.9,1,appear);op=lerp(0,1,clamp(appear*2.15,0,1));}
+          else{y=lerp(0,-44,vanish);s=lerp(1,0.935,vanish);op=lerp(1,0,vanish);}
+          card.style.transform=`translateY(${y}px) scale(${s})`;
+          card.style.opacity=op;
+          card.style.zIndex=cardCount-i+(appear>=1?100:0);
         }
+        card.classList.toggle('is-active',i===active);
       });
     }
 
-    function animateStack() {
-      if (window.innerWidth <= 768) {
-        dotsWrap.classList.remove('visible');
-        isAnimating = false;
-        rafId = null;
-        return;
-      }
-
-      const scrolled = readTargetScroll();
-      smoothIdx = lerp(smoothIdx, targetIdx, 0.11);
-      if (Math.abs(targetIdx - smoothIdx) < 0.0007) {
-        smoothIdx = targetIdx;
-      }
-
-      renderStack(smoothIdx, scrolled);
-
-      if (Math.abs(targetIdx - smoothIdx) > 0.0007 || isAnimating) {
-        rafId = requestAnimationFrame(animateStack);
-      } else {
-        isAnimating = false;
-        rafId = null;
-      }
+    function animateStack(){
+      if(window.innerWidth<=768){dotsWrap.classList.remove('visible');isAnimating=false;rafId=null;return;}
+      const scrolled=readTargetScroll();
+      smoothIdx=lerp(smoothIdx,targetIdx,0.11);
+      if(Math.abs(targetIdx-smoothIdx)<0.0007)smoothIdx=targetIdx;
+      renderStack(smoothIdx,scrolled);
+      if(Math.abs(targetIdx-smoothIdx)>0.0007||isAnimating){rafId=requestAnimationFrame(animateStack);}
+      else{isAnimating=false;rafId=null;}
     }
 
-    function requestStackRender() {
-      isAnimating = true;
-      if (!rafId) {
-        rafId = requestAnimationFrame(animateStack);
-      }
-    }
+    function requestStackRender(){isAnimating=true;if(!rafId)rafId=requestAnimationFrame(animateStack);}
 
-    function currentPanelIndex() {
-      readTargetScroll();
-      return Math.round(targetIdx);
-    }
+    let wheelLocked=false,wheelUnlockTimer=null,scrollAnimRaf=null;
+    const snapDurationMs=650;
 
-    function goToPanelIndex(index) {
-      if (window.innerWidth <= 768) return;
-      const clampedIndex = clamp(index, 0, cardCount - 1);
-      const targetTop = section.offsetTop + perCardScroll * clampedIndex;
-      const startTop = window.scrollY;
-      const diff = targetTop - startTop;
-      if (Math.abs(diff) < 0.5) {
-        requestStackRender();
-        return;
-      }
+    function currentPanelIndex(){readTargetScroll();return Math.round(targetIdx);}
 
-      if (scrollAnimRaf) cancelAnimationFrame(scrollAnimRaf);
-      const startTime = performance.now();
-      const easeInOutQuart = (t) => (t < 0.5 ? 8 * t * t * t * t : 1 - Math.pow(-2 * t + 2, 4) / 2);
-
-      const tick = (now) => {
-        const elapsed = now - startTime;
-        const t = clamp(elapsed / snapDurationMs, 0, 1);
-        const eased = easeInOutQuart(t);
-        window.scrollTo(0, startTop + diff * eased);
-        if (t < 1) {
-          scrollAnimRaf = requestAnimationFrame(tick);
-        } else {
-          scrollAnimRaf = null;
-          requestStackRender();
-        }
+    function goToPanelIndex(index){
+      if(window.innerWidth<=768)return;
+      const ci=clamp(index,0,cardCount-1);
+      const targetTop=section.offsetTop+perCardScroll*ci;
+      const startTop=window.scrollY;const diff=targetTop-startTop;
+      if(Math.abs(diff)<0.5){requestStackRender();return;}
+      if(scrollAnimRaf)cancelAnimationFrame(scrollAnimRaf);
+      const startTime=performance.now();
+      const ease=t=>(t<0.5?8*t*t*t*t:1-Math.pow(-2*t+2,4)/2);
+      const tick=now=>{
+        const t=clamp((now-startTime)/snapDurationMs,0,1);
+        window.scrollTo(0,startTop+diff*ease(t));
+        if(t<1)scrollAnimRaf=requestAnimationFrame(tick);
+        else{scrollAnimRaf=null;requestStackRender();}
       };
-
-      scrollAnimRaf = requestAnimationFrame(tick);
+      scrollAnimRaf=requestAnimationFrame(tick);
     }
 
-    function canControlStackByWheel() {
-      if (window.innerWidth <= 768) return false;
-      const rect = section.getBoundingClientRect();
-      return rect.top < window.innerHeight * 0.8 && rect.bottom > window.innerHeight * 0.2;
+    function canControlStackByWheel(){
+      if(window.innerWidth<=768)return false;
+      const rect=section.getBoundingClientRect();
+      return rect.top<window.innerHeight*0.8&&rect.bottom>window.innerHeight*0.2;
     }
 
-    function lockWheelStep() {
-      wheelLocked = true;
-      if (wheelUnlockTimer) clearTimeout(wheelUnlockTimer);
-      wheelUnlockTimer = setTimeout(() => {
-        wheelLocked = false;
-      }, 720);
+    function lockWheelStep(){
+      wheelLocked=true;
+      if(wheelUnlockTimer)clearTimeout(wheelUnlockTimer);
+      wheelUnlockTimer=setTimeout(()=>{wheelLocked=false;},720);
     }
 
     setupStackHeight();
     requestStackRender();
-    window.addEventListener('resize', () => {
-      setupStackHeight();
+    window.addEventListener('resize',()=>{setupStackHeight();requestStackRender();});
+
+    window.addEventListener('scroll',()=>{
+      navbar.classList.toggle('scrolled',window.scrollY>40);
       requestStackRender();
-    });
-    window.addEventListener('scroll', requestStackRender, { passive: true });
-    window.addEventListener('wheel', (event) => {
-      if (!canControlStackByWheel()) return;
-      if (wheelLocked) {
-        event.preventDefault();
-        return;
-      }
+      bgOnScroll();
+    },{passive:true});
 
-      const delta = event.deltaY;
-      if (Math.abs(delta) < 4) return;
+    window.addEventListener('wheel',(event)=>{
+      if(!canControlStackByWheel())return;
+      if(wheelLocked){event.preventDefault();return;}
+      const delta=event.deltaY;if(Math.abs(delta)<4)return;
       event.preventDefault();
-
-      const step = delta > 0 ? 1 : -1;
-      const nextIndex = currentPanelIndex() + step;
-      goToPanelIndex(nextIndex);
+      goToPanelIndex(currentPanelIndex()+(delta>0?1:-1));
       lockWheelStep();
-    }, { passive: false });
+    },{passive:false});
 
-    allDots.forEach((dot) => {
-      dot.addEventListener('click', () => {
-        if (window.innerWidth <= 768) return;
-        goToPanelIndex(Number(dot.dataset.i));
+    allDots.forEach(dot=>{dot.addEventListener('click',()=>{if(window.innerWidth<=768)return;goToPanelIndex(Number(dot.dataset.i));});});
+
+    document.querySelectorAll('a[href^="#"]').forEach(link=>{
+      link.addEventListener('click',event=>{
+        const href=link.getAttribute('href');if(!href||href==='#')return;
+        const targetId=href.slice(1);
+        const pi=panelIndexById.get(targetId);
+        if(pi!==undefined&&window.innerWidth>768){event.preventDefault();goToPanelIndex(pi);}
       });
     });
 
-    function scrollToStackPanelById(targetId) {
-      const panelIndex = panelIndexById.get(targetId);
-      if (panelIndex === undefined || window.innerWidth <= 768) return false;
-      goToPanelIndex(panelIndex);
-      return true;
-    }
-
-    document.querySelectorAll('a[href^="#"]').forEach((link) => {
-      link.addEventListener('click', (event) => {
-        const href = link.getAttribute('href');
-        if (!href || href === '#') return;
-        const targetId = href.slice(1);
-        if (scrollToStackPanelById(targetId)) {
-          event.preventDefault();
-        }
-      });
-    });
-
-    // Form submission
-    function handleSubmit(e) {
+    document.getElementById('contactForm')?.addEventListener('submit',e=>{
       e.preventDefault();
-      const btn = e.target.querySelector('button[type="submit"]');
-      const originalHTML = btn.innerHTML;
-
-      btn.innerHTML = `
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
-        Odesláno!
-      `;
-      btn.style.background = 'var(--green-500)';
-      btn.style.boxShadow = '0 4px 16px rgba(34, 197, 94, 0.3)';
-      btn.disabled = true;
-
-      setTimeout(() => {
-        btn.innerHTML = originalHTML;
-        btn.style.background = '';
-        btn.style.boxShadow = '';
-        btn.disabled = false;
-        e.target.reset();
-      }, 3000);
-    }
+      const n=document.getElementById('contact-name').value.trim();
+      const em=document.getElementById('contact-email-input').value.trim();
+      const msg=document.getElementById('contact-message').value.trim();
+      const body=`Jméno: ${encodeURIComponent(n)}%0D%0AE-mail: ${encodeURIComponent(em)}%0D%0A%0D%0A${encodeURIComponent(msg)}`;
+      const subject=encodeURIComponent('Kontakt z webu IndiWeb');
+      window.location.href=`mailto:info.indiweb@gmail.com?subject=${subject}&body=${body}`;
+    });
   </script>
-
 </body>
 </html>
