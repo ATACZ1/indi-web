@@ -7,7 +7,7 @@
   <meta name="description" content="Tvoříme moderní weby na klíč pro firmy, markeťáky i začínající podnikatele. Bez stresu, bez IT žargonu.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,100..900&family=Inter:wght@200;300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,100..900&family=Inter:wght@200;300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&family=Sora:wght@200;300;400;600;700;800&display=swap" rel="stylesheet">
   <style>
     *,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
 
@@ -151,58 +151,7 @@
       font-size: clamp(2.4rem,5vw,4rem); font-weight: 800; line-height: 1.1; letter-spacing: -0.03em;
       color: var(--white); margin-bottom: 20px; max-width: 900px; margin-left: auto; margin-right: auto;
     }
-    .hero-h1-highlight {
-      color: var(--gray-200);
-    }
-    .hero-p {
-      font-size: clamp(1.1rem,2vw,1.3rem); color: var(--gray-500); max-width: 640px; margin: 0 auto 32px; line-height: 1.7;
-    }
-    .hero-top .hero-buttons { margin-bottom: 48px; }
-    .hero-proof {
-      display: flex; align-items: center; justify-content: center; gap: 24px; flex-wrap: wrap;
-      color: var(--gray-500); font-size: 0.9rem;
-    }
-    .hero-stat strong { color: var(--white); font-weight: 700; }
-    .hero-proof .hero-stat:not(:first-child)::before { content: ' • '; margin-right: 8px; color: var(--gray-600); }
-
-    /* ===== INDIWEB HERO (3D + překrývání + hover thin→bold) ===== */
-    #indiwebHero {
-      display: block; margin-bottom: 20px;
-      font-size: clamp(2.8rem, 8vw, 5rem); font-weight: 200; letter-spacing: -0.04em;
-      color: var(--white); line-height: 1; text-align: center;
-      perspective: 1200px; transform-style: preserve-3d;
-      transform: translateX(-100%); opacity: 0;
-      transition: transform 0.7s cubic-bezier(0.22,1,0.36,1), opacity 0.6s ease;
-    }
-    #indiwebHero.slide-in {
-      transform: translateX(0); opacity: 1;
-    }
-    #indiwebHero .indiweb-thin {
-      display: inline-block;
-      font-weight: 200;
-      transform: translateZ(-24px) scale(0.96);
-      margin-right: -0.08em;
-      transition: font-weight 0.4s ease, transform 0.4s ease;
-      filter: brightness(0.85);
-    }
-    #indiwebHero .indiweb-bold {
-      display: inline-block;
-      font-weight: 700;
-      transform: translateZ(16px) scale(1.02);
-      transition: font-weight 0.4s ease, transform 0.4s ease;
-      position: relative;
-      z-index: 1;
-    }
-    #indiwebHero:hover .indiweb-thin {
-      font-weight: 700;
-      transform: translateZ(12px) scale(1);
-      filter: brightness(1);
-    }
-    #indiwebHero:hover .indiweb-bold {
-      font-weight: 800;
-      transform: translateZ(24px) scale(1.03);
-    }
-
+    .hero-h1-highlight { color: var(--gray-200); }
     /* ===== CARD BRAND (IndIWeb – outline vrstva + plná vrstva + hover) ===== */
     #brand.stack-panel { display: flex; align-items: center; justify-content: center; padding: clamp(28px,4vw,44px); }
     .card-brand {
@@ -328,20 +277,32 @@
     }
     .card-subtitle { color: var(--gray-500); font-size: clamp(1.08rem,1.6vw,1.2rem); margin-bottom: 24px; max-width: 860px; }
     .card-content { display: grid; gap: 14px; flex: 1; }
-    .info-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 14px; }
+    .info-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 24px; width: 100%; }
     .info-box {
       background: rgba(255,255,255,0.03);
       backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
       border: 1px solid var(--border);
-      border-radius: 20px; padding: 20px;
+      border-radius: 10px; padding: 10px 18px;
       box-shadow: 0 0 0 1px rgba(255,255,255,0.03) inset;
+      display: flex; flex-direction: column; align-items: flex-start; justify-content: center;
+      text-align: left;
     }
-    .info-box h3 { color: var(--white); font-size: 1rem; margin-bottom: 8px; }
-    .info-box p, .info-box li { color: var(--gray-500); font-size: 0.92rem; line-height: 1.55; }
-    .info-box ul { margin-left: 16px; display: grid; gap: 6px; }
+    .info-box h3 { color: var(--white); font-size: 1.75rem; font-weight: 700; margin-bottom: 6px; line-height: 1.25; }
+    .info-box p, .info-box li { color: var(--gray-500); font-size: 0.8rem; line-height: 1.4; }
+    .info-box ul { margin-left: 0; padding-left: 0; list-style: none; display: grid; gap: 6px; }
     .hero-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
-    /* Contact form */
-    .contact-form { display: grid; gap: 16px; max-width: 520px; margin: 0 auto; }
+    .card-content .hero-buttons .btn { padding: 8px 28px; font-size: 0.85rem; border-radius: 8px; }
+    /* Contact – dvousloupcový layout */
+    #contact .contact-layout {
+      display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px,5vw,56px);
+      align-items: start; width: 100%; flex: 1;
+    }
+    @media (max-width: 768px) {
+      #contact .contact-layout { grid-template-columns: 1fr; }
+    }
+    .contact-text { display: flex; flex-direction: column; gap: 12px; }
+    .contact-text .card-subtitle { margin-bottom: 0; }
+    .contact-form { display: grid; gap: 16px; width: 100%; }
     .contact-form .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
     @media (max-width: 520px) { .contact-form .form-row { grid-template-columns: 1fr; } }
     .contact-form label { display: block; font-size: 0.88rem; font-weight: 500; color: var(--gray-500); margin-bottom: 6px; }
@@ -403,9 +364,6 @@
       .info-grid { grid-template-columns: 1fr 1fr; }
     }
     @media (max-width: 768px) {
-      .hero-top { padding: 100px 0 60px; }
-      .hero-proof { flex-direction: column; gap: 8px; }
-      .hero-proof .hero-stat:not(:first-child)::before { display: none; }
       .nav-links {
         display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
         background: rgba(10,10,10,0.98); backdrop-filter: blur(20px);
@@ -473,21 +431,8 @@
   <!-- HERO (top) -->
   <section class="hero-top" id="heroTop">
     <div class="container">
-      <div class="hero-badge">
-        Přijímáme nové projekty
-      </div>
-      <span id="indiwebHero" class="indiweb-hero" aria-hidden="true"><span class="indiweb-thin">IndI</span><span class="indiweb-bold">Web</span></span>
-      <h1 class="hero-h1">Tvoříme weby, které vám <span class="hero-h1-highlight">šetří čas, prodávají a dají vám svobodu</span></h1>
-      <p class="hero-p">Ať už řídíte firmu, vedete marketing nebo teprve začínáte podnikat – postavíme vám web, který pracuje za vás.</p>
-      <div class="hero-buttons">
-        <a href="#contact" class="btn btn-primary">Chci nový web</a>
-        <a href="#contact" class="btn btn-secondary">Konzultace zdarma</a>
-      </div>
-      <div class="hero-proof">
-        <span class="hero-stat"><strong>50+</strong> projektů</span>
-        <span class="hero-stat"><strong>4,9 ★</strong> hodnocení</span>
-        <span class="hero-stat"><strong>14 dní</strong> dodací lhůta</span>
-      </div>
+      <div class="hero-badge">Přijímáme nové projekty</div>
+      <h1 class="hero-h1">Tvoříme weby, které vám <span class="hero-h1-highlight">šetří čas</span></h1>
     </div>
   </section>
 
@@ -530,10 +475,6 @@
               <div class="info-box"><h3>Bez IT žargonu</h3><p>Vše vysvětlujeme lidsky, stručně a srozumitelně.</p></div>
               <div class="info-box"><h3>Výsledek, ne chaos</h3><p>Konverzní struktura, jasné CTA a měřitelný výkon.</p></div>
             </div>
-            <div class="hero-buttons">
-              <a href="#contact" class="btn btn-primary">Chci nový web</a>
-              <a href="#contact" class="btn btn-secondary">Konzultace zdarma</a>
-            </div>
           </div>
         </article>
 
@@ -556,19 +497,21 @@
           <p class="card-subtitle">Žádné překvapení. Každý krok má jasný výstup a vždy víš, co následuje.</p>
           <div class="card-content">
             <div class="info-grid">
-              <div class="info-box"><h3>1) Krátký hovor</h3><p>15 minut na pochopení cíle, rozpočtu a priorit projektu.</p></div>
-              <div class="info-box"><h3>2) Návrh a realizace</h3><p>UX/UI návrh, schválení a vývoj webu bez zbytečných průtahů.</p></div>
-              <div class="info-box"><h3>3) Spuštění a péče</h3><p>Nasazení, zaškolení a podpora po launchi.</p></div>
+              <div class="info-box"><h3>Krátký hovor</h3><p>15 minut na pochopení cíle, rozpočtu a priorit projektu.</p></div>
+              <div class="info-box"><h3>Návrh a realizace</h3><p>UX/UI návrh, schválení a vývoj webu bez zbytečných průtahů.</p></div>
+              <div class="info-box"><h3>Spuštění a péče</h3><p>Nasazení, zaškolení a podpora po launchi.</p></div>
             </div>
           </div>
         </article>
 
         <article class="stack-panel" id="contact">
-          <div class="card-label">Konzultace a poptávka</div>
-          <h2 class="card-title">S čím vám můžeme pomoci?</h2>
-          <p class="card-subtitle">Úvodní hovor je nezávazný. Napište nám a ozveme se obvykle do 24 hodin.</p>
-          <div class="card-content">
-            <span class="contact-email">E-mail: <a href="mailto:info.indiweb@gmail.com">info.indiweb@gmail.com</a></span>
+          <div class="contact-layout">
+            <div class="contact-text">
+              <div class="card-label">Konzultace a poptávka</div>
+              <h2 class="card-title">S čím vám můžeme pomoci?</h2>
+              <p class="card-subtitle">Úvodní hovor je nezávazný. Napište nám a ozveme se obvykle do 24 hodin.</p>
+              <span class="contact-email">E-mail: <a href="mailto:info.indiweb@gmail.com">info.indiweb@gmail.com</a></span>
+            </div>
             <form class="contact-form" id="contactForm">
               <div class="form-row">
                 <div>
@@ -604,11 +547,6 @@
   <div class="progress-dots" id="dots"><div class="pdot active" data-i="0"></div><div class="pdot" data-i="1"></div><div class="pdot" data-i="2"></div><div class="pdot" data-i="3"></div><div class="pdot" data-i="4"></div></div>
 
   <script>
-    document.addEventListener('DOMContentLoaded',()=>{
-      const el=document.getElementById('indiwebHero');
-      if(el)el.classList.add('slide-in');
-    });
-
     // ===== BG MONITOR + KEYBOARD (kód podle scrollu, blikání kláves) =====
     const BG_LINES=[
       [{t:'bg-cm',v:'// IndIWeb – weby, které prodávají'}],
@@ -768,7 +706,8 @@
     function canControlStackByWheel(){
       if(window.innerWidth<=768)return false;
       const rect=section.getBoundingClientRect();
-      return rect.top<window.innerHeight*0.8&&rect.bottom>window.innerHeight*0.2;
+      // Pouze když jsme už v stack sekci (scrollnuli jsme přes hero) – jinak by wheel přeskočil první kartu
+      return rect.top<=0&&rect.bottom>window.innerHeight*0.2;
     }
 
     function lockWheelStep(){
